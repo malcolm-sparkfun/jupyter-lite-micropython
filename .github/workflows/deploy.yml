@@ -9,11 +9,48 @@ on:
       - '*'
 
 jobs:
+
+  build-kernel:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.build-info.outputs.version }}
+      build_time: ${{ steps.build-info.outputs.build_time }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Base Setup
+        uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
+
+      - name: Install dependencies
+        run: python -m pip install -U "jupyterlab>=4.0.0,<5"
+
+      - name: Build the extension
+        run: |
+          cd kernel
+          jlpm 
+          jlpm build:prod
+          hatch build
+
+      - name: Upload wheel files
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-artifacts
+          path: kernel/dist/*.whl
+          if-no-files-found: error
+
   build:
+    needs: build-kernel
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Download wheel files
+        uses: actions/download-artifact@v4
+        with:
+          name: wheel-artifacts
+          path: kernel
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -25,6 +62,7 @@ jobs:
         run: |
           cp README.md content
           jupyter lite build --contents content --output-dir dist
+          cp -r binaries dist/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
