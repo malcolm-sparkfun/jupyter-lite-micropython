@@ -8,7 +8,7 @@ jupyterlab-language-pack-fr-FR
 jupyterlab-language-pack-zh-CN
 
 # Micropython kernel
-jupyterlite-embedded-kernel
+./kernel/jupyterlite_embedded_kernel-0.1.1-py3-none-any.whl
 
 # JupyterLab: Fasta file renderer (optional)
 jupyterlab-fasta>=3.3.0,<4
