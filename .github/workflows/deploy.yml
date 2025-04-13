@@ -24,7 +24,7 @@ jobs:
       - name: Base Setup
         uses: jupyterlab/maintainer-tools/.github/actions/base-setup@v1
         with:
-          dependency_type: pre
+          dependency_type: minimum
 
       - name: Install dependencies
         run: python -m pip install -U "jupyterlab>=4.0.0,<5"
