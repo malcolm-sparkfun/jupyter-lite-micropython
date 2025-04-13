@@ -32,7 +32,7 @@ export class Dialog {
         action: 'connect',
         icon: '🔌',
         title: 'Connect Device',
-        description: 'Connect to ESP32 device via serial',
+        description: 'Connect to RedBoard via serial',
         color: 'var(--ui-navy)'
       },
       props.serviceContainer.deviceService);
@@ -80,7 +80,7 @@ export class Dialog {
 
   private createHeader(): HTMLDivElement {
     const header = document.createElement('div');
-    header.innerHTML = '<h1 class="welcome-title">ESP32 Device Manager</h1>';
+    header.innerHTML = '<h1 class="welcome-title">RedBoard Device Manager</h1>';
     return header;
   }
 
