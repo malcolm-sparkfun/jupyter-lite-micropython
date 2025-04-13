@@ -6,7 +6,7 @@ export class MinimizedButton {
   constructor(onShow: () => void) {
     this.element = document.createElement('div');
     this.element.className = 'esp-button-container';
-    this.element.title = 'Open ESP32 Device Manager';
+    this.element.title = 'Open RedBoard Device Manager';
     this.element.style.display = 'none';
     this.element.addEventListener('click', onShow);
 
@@ -53,11 +53,11 @@ export class MinimizedButton {
   updateOnConnection(msg: string){
     this.statusIndicator.classList.add('connected');
     this.deviceLabel.textContent = msg;
-    this.element.title = `Open ESP32 Device Manager (${msg})`;
+    this.element.title = `Open RedBoard Device Manager (${msg})`;
   }
   updateOnDisconnection(msg: string){
     this.statusIndicator.classList.add('disconnected');
     this.deviceLabel.textContent = msg;
-    this.element.title = `Open ESP32 Device Manager (${msg})`;
+    this.element.title = `Open RedBoard Device Manager (${msg})`;
   }
 }
