@@ -17,8 +17,8 @@ export class MinimizedButton {
     contentContainer.className = 'button-content';
 
     const img = document.createElement('img');
-    img.src = 'https://www.cdnlogo.com/logos/e/41/espressif-systems.svg';
-    img.alt = 'Espressif Systems Logo';
+    img.src = 'https://acceleratingvector.com/flame.svg';
+    img.alt = 'SparkFun Electronics Logo';
     contentContainer.appendChild(img);
     
     const statusWrapper = document.createElement('div');
