@@ -34,8 +34,8 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         language: 'python',
         argv: [],
         resources: {
-          'logo-32x32': 'https://www.cdnlogo.com/logos/e/41/espressif-systems.svg',
-          'logo-64x64': 'https://www.cdnlogo.com/logos/e/41/espressif-systems.svg',
+          'logo-32x32': 'https://acceleratingvector.com/flame.svg',
+          'logo-64x64': 'https://acceleratingvector.com/flame.svg',
         },
       },
       create: async (options: IKernel.IOptions): Promise<IKernel> => {
