@@ -67,6 +67,9 @@ export class FirmwareService {
         }
         const firmwareUrl = asset.browser_download_url;
 
+        // log the asset object
+        console.log('Asset:', asset);
+
         const firmwareOption: FirmwareOption = {
           name: firmwareName,
           url: firmwareUrl
