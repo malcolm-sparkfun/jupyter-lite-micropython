@@ -17,6 +17,9 @@ export class FirmwareService {
     this.reqFirmwareOptionsGitHub().then((res) => {
       this.firmwareOptions = res;
     })
+
+    // Log the firmware options to the console for debugging.
+    console.log('Firmware options:', this.firmwareOptions);
   
     if (savedSelection) {
       this.selectedFirmwareId = savedSelection;
@@ -28,9 +31,15 @@ export class FirmwareService {
   // We'll use this method to fetch the firmware options from GitHub.
   // We could alternatively use local files in ../binaries/ so we aren't sending a request to GitHub every time.
   private async reqFirmwareOptionsGitHub(): Promise<Record<string, FirmwareOption>> {
+    // Log that we're in the reqFirmwareOptionsGitHub method.
+    console.log('Fetching firmware options from GitHub...');
+
     const releases = await fetch('https://api.github.com/repos/sparkfun/micropython/releases', {
       method: 'GET'
     });
+
+    // Log the response for debugging.
+    console.log('Releases response:', releases);
 
     if (!releases.ok) {
       throw new Error(`Failed to fetch releases: ${releases.status} ${releases.statusText}`);
@@ -47,6 +56,9 @@ export class FirmwareService {
     const latestRelease = releasesData[0];
     if (latestRelease && latestRelease.assets) {
       latestRelease.assets.forEach((asset: any) => {
+        // Log the asset for debugging.
+        console.log('Asset:', asset);
+
         // We should make the name the full name of the asset but the key the firmwareId (the board name in lowercase with dashes and an optional "m" prefix for minimal).
         const firmwareName = asset.name;
         var firmwareId = firmwareName.replace(/\.uf2|\.zip/g, '').toLowerCase().replace(/_/g, '-');
