@@ -1,4 +1,5 @@
 import { FirmwareOption } from '../constants'
+import { defaultFirmwareOptions } from '../constants'
 import { DeviceService } from './DeviceService';
 
 export class FirmwareService {
@@ -14,16 +15,19 @@ export class FirmwareService {
     // Get the firmware options from GitHub (or local files).
     // Maybe we'll add an explicit button for updating the firmware options in the future...
     // We'll initialize our private firmwareOptions here with the reqFirmwareOptionsGitHub() method.
-    console.log("In the constructor about to fetch firmware options from GitHub...");
-    this.reqFirmwareOptionsGitHub().then((res) => {
-      // log the res 
-      console.log('Firmware options response:', res);
-      this.firmwareOptions = res;
-    })
+    // console.log("In the constructor about to fetch firmware options from GitHub...");
+    // this.reqFirmwareOptionsGitHub().then((res) => {
+    //   // log the res 
+    //   console.log('Firmware options response:', res);
+    //   this.firmwareOptions = res;
+    // })
 
     // Log the firmware options to the console for debugging.
-    console.log('Firmware options:', this.firmwareOptions);
-  
+    // console.log('Firmware options:', this.firmwareOptions);
+    
+    // Initialize firmware options with defaultFirmwareOptions.
+    this.firmwareOptions = defaultFirmwareOptions;
+
     if (savedSelection) {
       this.selectedFirmwareId = savedSelection;
     } else {
@@ -34,15 +38,9 @@ export class FirmwareService {
   // We'll use this method to fetch the firmware options from GitHub.
   // We could alternatively use local files in ../binaries/ so we aren't sending a request to GitHub every time.
   private async reqFirmwareOptionsGitHub(): Promise<Record<string, FirmwareOption>> {
-    // Log that we're in the reqFirmwareOptionsGitHub method.
-    console.log('Fetching firmware options from GitHub...');
-
     const releases = await fetch('https://api.github.com/repos/sparkfun/micropython/releases', {
       method: 'GET'
     });
-
-    // Log the response for debugging.
-    console.log('Releases response:', releases);
 
     if (!releases.ok) {
       throw new Error(`Failed to fetch releases: ${releases.status} ${releases.statusText}`);
@@ -59,8 +57,6 @@ export class FirmwareService {
     const latestRelease = releasesData[0];
     if (latestRelease && latestRelease.assets) {
       latestRelease.assets.forEach((asset: any) => {
-        // Log the asset for debugging.
-        console.log('Asset:', asset);
 
         // We should make the name the full name of the asset but the key the firmwareId (the board name in lowercase with dashes and an optional "m" prefix for minimal).
         const firmwareName = asset.name;
@@ -71,20 +67,12 @@ export class FirmwareService {
         }
         const firmwareUrl = asset.browser_download_url;
 
-        // Log the firmwareId, firmwareName, and firmwareUrl for debugging.
-        console.log('Firmware ID:', firmwareId);
-        console.log('Firmware Name:', firmwareName);
-        console.log('Firmware URL:', firmwareUrl);
-
         const firmwareOption: FirmwareOption = {
           name: firmwareName,
           url: firmwareUrl
         };
 
         firmwareOptions[firmwareId] = firmwareOption;
-
-        // Log the firmware option for debugging.
-        console.log('Firmware option:', firmwareOptions[firmwareId]);
       });
     }
     
@@ -98,6 +86,20 @@ export class FirmwareService {
     console.log('FINAL Firmware options:', firmwareOptions);
     
     return firmwareOptions;
+  }
+
+  // Create an init function that performs any asynchronous initialization for the firmware service. For now that will just be fetching the firmware options from GitHub.
+  async init(): Promise<void> {
+    // Log that we're in the init method.
+    console.log('Initializing firmware service...');
+    
+    // Fetch the firmware options from GitHub.
+    try {
+      this.firmwareOptions = await this.reqFirmwareOptionsGitHub();
+      console.log('Firmware options initialized:', this.firmwareOptions);
+    } catch (error) {
+      console.error('Error fetching firmware options:', error);
+    }
   }
 
   // This is where we can add our logic of fetching from GitHub.

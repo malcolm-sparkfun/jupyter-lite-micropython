@@ -41,6 +41,7 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
       create: async (options: IKernel.IOptions): Promise<IKernel> => {
 
         const serviceContainer = new ServiceContainer()
+        await serviceContainer.init();
 
         const welcomePanel = new WelcomePanel(serviceContainer);
         document.body.appendChild(welcomePanel.getElement());

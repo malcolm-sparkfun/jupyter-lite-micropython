@@ -22,6 +22,12 @@ export class ServiceContainer {
     );
   }
 
+  // Perform any asynchronous initialization for any of the services here.
+  public async init(): Promise<void> {
+    // We have to wait for the asynchronous init of the firmware service to complete before we can use it in the flash service.
+    await this._firmwareService.init();
+  }
+
   public get deviceService(): DeviceService {
     return this._deviceService;
   }
