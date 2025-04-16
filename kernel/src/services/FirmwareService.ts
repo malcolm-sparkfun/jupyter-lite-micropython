@@ -68,11 +68,20 @@ export class FirmwareService {
         }
         const firmwareUrl = asset.browser_download_url;
 
+        // Log the firmwareId, firmwareName, and firmwareUrl for debugging.
+        console.log('Firmware ID:', firmwareId);
+        console.log('Firmware Name:', firmwareName);
+        console.log('Firmware URL:', firmwareUrl);
+
         const firmwareOption: FirmwareOption = {
           name: firmwareName,
           url: firmwareUrl
         };
+
         firmwareOptions[firmwareId] = firmwareOption;
+
+        // Log the firmware option for debugging.
+        console.log('Firmware option:', firmwareOptions[firmwareId]);
       });
     }
     
@@ -82,6 +91,8 @@ export class FirmwareService {
       url: ''
     };
 
+    // log the firmware options for debugging.
+    console.log('FINAL Firmware options:', firmwareOptions);
     return firmwareOptions;
   }
 
