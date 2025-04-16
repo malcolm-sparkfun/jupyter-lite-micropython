@@ -129,8 +129,10 @@ export class FirmwareService {
     }
     
     if (this.selectedFirmwareId === 'auto') {
+      console.log('Auto-detecting firmware...');
       return this.downloadAutoDetectedFirmware();
     } else {
+      console.log('FirmwareService: Downloading firmware for:', this.selectedFirmwareId);
       return this.downloadSpecificFirmware(this.selectedFirmwareId);
     }
   }
@@ -158,6 +160,8 @@ export class FirmwareService {
   
   // TODO: This is where we can add our logic of fetching from GitHub
   private async downloadSpecificFirmware(firmwareId: string): Promise<string> {
+
+    console.log("Downloading firmware for:", firmwareId);
     const selectedFirmware = this.firmwareOptions[firmwareId]
     if (!selectedFirmware || !selectedFirmware.url) {
       throw new Error(`Invalid firmware selection or no URL for: ${firmwareId}`);
@@ -170,10 +174,12 @@ export class FirmwareService {
       }
     });
 
-    if (!result.ok) {
-      console.log("Error fetching firmware:", result.status, result.statusText);
-      throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
-    }
+    console.log('Firmware fetch result:', result);
+
+    // if (!result.ok) {
+    //   console.log("Error fetching firmware:", result.status, result.statusText);
+    //   throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
+    // }
 
     this.firmwareBlob = await result.blob();
     const uint8Array = new Uint8Array(await this.firmwareBlob.arrayBuffer());

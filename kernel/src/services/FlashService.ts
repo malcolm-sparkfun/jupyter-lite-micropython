@@ -93,6 +93,7 @@ export class FlashService {
 
             let targetFirmware = 'esp32';
             
+            // TODO: will have to change this to also perform detection for all other board types
             if (chipType.includes('C6')) {
               targetFirmware = 'esp32-c6';
             } else if (chipType.includes('C3')) {
@@ -115,8 +116,9 @@ export class FlashService {
         }
       }
 
-      progressOverlay.setStatus('Downloading firmware...');
+      progressOverlay.setStatus('Flash Process: Downloading firmware...');
       let firmwareString = await this.firmwareService.downloadFirmware();
+      console.log('Firmware string from within flash process:', firmwareString);
 
       const flashOptions = {
         fileArray: [{
