@@ -171,6 +171,7 @@ export class FirmwareService {
     });
 
     if (!result.ok) {
+      console.log("Error fetching firmware:", result.status, result.statusText);
       throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
     }
 
