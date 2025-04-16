@@ -168,8 +168,14 @@ export class FirmwareService {
     }
 
     console.log("Performing fetch for firmware:", selectedFirmware.url);
-
-    const result = await fetch(selectedFirmware.url, {});
+    
+    const result = await fetch(selectedFirmware.url, {
+      mode: 'cors',
+      headers: {
+        'Accept': 'application/octet-stream',
+      },
+      method: 'GET'
+    });
 
     console.log('Firmware fetch result:', result);
 
