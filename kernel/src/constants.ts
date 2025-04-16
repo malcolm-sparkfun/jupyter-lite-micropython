@@ -4,7 +4,8 @@ export interface FirmwareOption {
   url: string;
 }
 
-export const firmwareOptions: Record<string, FirmwareOption> = {
+// Optionally in the future could switch to initialize with this and make it align with a recent-ish release...
+export const defaultFirmwareOptions: Record<string, FirmwareOption> = {
   'auto': {
     name: 'Auto detection',
     url: ''
