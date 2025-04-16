@@ -180,6 +180,7 @@ export class FirmwareService {
       .map(byte => String.fromCharCode(byte))
       .join('');
 
+    console.log('Downloaded SFE FIRMWARE. Firmware string size:', this.firmwareString.length);
     return this.firmwareString;
   }
 

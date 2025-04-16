@@ -132,7 +132,7 @@ export const dialogStyles = `
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 90%;
-    max-width: 500px;
+    max-width: 750px;
     padding: 2rem;
     position: relative;
     transform: translateY(20px);
@@ -146,9 +146,10 @@ export const dialogStyles = `
   }
 
   .firmware-section {
-    width: 100%;
+    width: 50%;
     margin-top: 0.75rem;
     animation: fadeIn 0.5s ease-out forwards;
+    margin-left: 20px;
   }
   
   .firmware-divider {
