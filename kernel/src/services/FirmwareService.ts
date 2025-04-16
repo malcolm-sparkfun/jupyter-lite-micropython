@@ -167,12 +167,9 @@ export class FirmwareService {
       throw new Error(`Invalid firmware selection or no URL for: ${firmwareId}`);
     }
 
-    const result = await fetch(selectedFirmware.url, {
-      mode: 'no-cors',
-      headers: {
-        'Accept': 'application/octet-stream',
-      }
-    });
+    console.log("Performing fetch for firmware:", selectedFirmware.url);
+
+    const result = await fetch(selectedFirmware.url, {});
 
     console.log('Firmware fetch result:', result);
 
