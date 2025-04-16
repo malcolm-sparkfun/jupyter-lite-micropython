@@ -164,7 +164,7 @@ export class FirmwareService {
     }
 
     const result = await fetch(selectedFirmware.url, {
-      mode: 'cors',
+      mode: 'no-cors',
       headers: {
         'Accept': 'application/octet-stream',
       }
