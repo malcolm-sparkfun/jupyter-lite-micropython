@@ -14,7 +14,10 @@ export class FirmwareService {
     // Get the firmware options from GitHub (or local files).
     // Maybe we'll add an explicit button for updating the firmware options in the future...
     // We'll initialize our private firmwareOptions here with the reqFirmwareOptionsGitHub() method.
+    console.log("In the constructor about to fetch firmware options from GitHub...");
     this.reqFirmwareOptionsGitHub().then((res) => {
+      // log the res 
+      console.log('Firmware options response:', res);
       this.firmwareOptions = res;
     })
 
@@ -93,6 +96,7 @@ export class FirmwareService {
 
     // log the firmware options for debugging.
     console.log('FINAL Firmware options:', firmwareOptions);
+    
     return firmwareOptions;
   }
 
