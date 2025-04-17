@@ -4,8 +4,8 @@ import { DeviceService } from './DeviceService';
 // const { Octokit } = require('@octokit/rest');
 
 export class FirmwareService {
-  private firmwareString: string | null = null;
-  private firmwareBlob: Blob | null = null;
+  // private firmwareString: string | null = null;
+  // private firmwareBlob: Blob | null = null;
   private selectedFirmwareId: string = 'Auto';
   // Should make firmwareOptions a private variable and use getters to access it.
   // This way we can add logic to the getters if we need to in the future. Default to empty record.
