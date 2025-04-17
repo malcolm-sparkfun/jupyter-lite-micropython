@@ -2,6 +2,7 @@ import { FirmwareOption } from '../constants'
 import { defaultFirmwareOptions } from '../constants'
 import { DeviceService } from './DeviceService';
 // const { Octokit } = require('@octokit/rest');
+import { unzipit } from 'unzipit';
 
 export class FirmwareService {
   private firmwareString: string | null = null;
@@ -16,15 +17,6 @@ export class FirmwareService {
     // Get the firmware options from GitHub (or local files).
     // Maybe we'll add an explicit button for updating the firmware options in the future...
     // We'll initialize our private firmwareOptions here with the reqFirmwareOptionsGitHub() method.
-    // console.log("In the constructor about to fetch firmware options from GitHub...");
-    // this.reqFirmwareOptionsGitHub().then((res) => {
-    //   // log the res 
-    //   console.log('Firmware options response:', res);
-    //   this.firmwareOptions = res;
-    // })
-
-    // Log the firmware options to the console for debugging.
-    // console.log('Firmware options:', this.firmwareOptions);
     
     // Initialize firmware options with defaultFirmwareOptions.
     this.firmwareOptions = defaultFirmwareOptions;
@@ -35,6 +27,27 @@ export class FirmwareService {
       this.selectedFirmwareId = 'auto';
     }
   }
+
+  private async unzipStreamToVariable(stream: ReadableStream<Uint8Array>): Promise<{ [filename: string]: Uint8Array }> {
+    const reader = stream.getReader();
+    let chunks = [];
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      chunks.push(value);
+    }
+    const allChunks = new Uint8Array(chunks.flatMap(chunk => [...chunk]));
+    const { entries } = await unzipit.unzip(allChunks);
+  
+    const unzippedData: { [filename: string]: Uint8Array } = {};
+    for (const entry of Object.values(entries) as { name: string; arrayBuffer: () => Promise<Uint8Array> }[]) {
+      unzippedData[entry.name] = new Uint8Array(await entry.arrayBuffer());
+    }
+    return unzippedData;
+  }
+  
 
   // We'll use this method to fetch the firmware options from GitHub.
   // We could alternatively use local files in ../binaries/ so we aren't sending a request to GitHub every time.
@@ -67,24 +80,8 @@ export class FirmwareService {
           firmwareId = 'm-' + firmwareId.replace('minimal-', '');
         }
 
-
-        // curl method to download based on ID:
-        // curl -L \
-        // -H "Accept: application/vnd.github+json" \
-        // -H "Authorization: Bearer <YOUR-TOKEN>" \
-        // -H "X-GitHub-Api-Version: 2022-11-28" \
-        // https://api.github.com/repos/OWNER/REPO/releases/assets/ASSET_ID
-
         //method 1: use the browser_download_url from the asset object.
         const firmwareUrl = asset.browser_download_url;
-
-        //method 2: use the asset ID to formulate a GET request to the GitHub API with octokit.
-        // Instead let's use the asset ID to formulate an GitHub API URL.
-        // We'll still use the 'URL' var for now but it's actually a formatted GET req
-        //const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
-
-        //method 3: use the asset ID to formulate a direct url to fetch the asset from with similar method as curl.
-        // const firmwareUrl = `https://api.github.com/repos/sparkfun/micropython/releases/assets/${asset.id}`;
 
         // log the asset object
         console.log('Asset:', asset);
@@ -189,6 +186,8 @@ export class FirmwareService {
       throw new Error(`Invalid firmware selection or no URL for: ${firmwareId}`);
     }
 
+    // GitHub requires a CORS proxy to fetch files from their API. We'll use a public CORS proxy for now.
+    // See: https://github.com/orgs/community/discussions/106849 
     const cors_proxy = "https://corsproxy.io/?url=";
     console.log("Performing fetch for firmware:", cors_proxy + selectedFirmware.url);
     
@@ -200,98 +199,27 @@ export class FirmwareService {
       },
     });
 
-    // console.log('Firmware fetch result:', result);
-
-    // method 2: use the asset ID to formulate a GET request to the GitHub API with octokit.
-    // const octokit = new Octokit({});
-
-    // firmware URLs from above: const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
-    // const response = await octokit.request(selectedFirmware.url, {
-    //   owner: 'sparkfun',
-    //   repo: 'micropython',
-    //   asset_id: selectedFirmware.url.split('/').pop(), // Extract the asset ID from the URL
-    //   headers: {
-    //     'X-GitHub-Api-Version': '2022-11-28'
-    //   }
-    // });
-
-    // console.log('Response from GitHub:', response);
-    // throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
-
-    // method 3: use the asset ID to formulate a direct url to fetch the asset from with similar method as curl.
-    // we can look at the headers in the curl command to see what we need to add to our fetch request.
-    // const headers = new Headers({
-    //   'Accept': 'application/vnd.github+json',
-    //   'X-GitHub-Api-Version': '2022-11-28',
-    // });
-
-    // Since we are getting cors errors, 
-    // const result = await fetch(selectedFirmware.url, {
-    //   headers:{
-    //     // 'Accept': 'application/vnd.github+json',
-    //     'Accept': 'application/octet-stream',
-    //     'X-GitHub-Api-Version': '2022-11-28',
-    //     // 'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}` // Use your GitHub token here.
-    //   }
-    // });
-
-    // console.log('Result:', result);
-
-    // // Now we check the result to see if it's ok and then we can actually read from the body.
-    // if (!result.ok) {
-    //   console.log("Error fetching firmware:", result.status, result.statusText);
-    // }
-
-    // // stream the response
-    // const reader = result.body?.getReader();
-    // if (!reader) {
-    //   throw new Error('Failed to get reader from response body.');
-    // }
-
-    // let receivedLength = 0; // received bytes
-    // const chunks: Uint8Array[] = []; // chunks of received data
-
-    // while (true) {
-    //   const { done, value } = await reader.read();
-    //   if (done) {
-    //     break;
-    //   }
-    //   chunks.push(value);
-    //   receivedLength += value.length;
-    //   console.log(`Received ${receivedLength} bytes`);
-    // }
-
-    // console.log('All chunks received:', chunks);
-
-    // // Combine all chunks into a single Uint8Array
-    // const chunksAll = new Uint8Array(receivedLength);
-    // let position = 0;
-    // for (const chunk of chunks) {
-    //   chunksAll.set(chunk, position); // copy chunk to the final array
-    //   position += chunk.length; // update position
-    // }
-    // console.log('All chunks combined:', chunksAll);
-
-    
-    // // Convert the Uint8Array to a string
-    // const firmwareString = Array.from(chunksAll)
-    //   .map(byte => String.fromCharCode(byte))
-    //   .join('');
-
-    // console.log('Firmware string:', firmwareString);
-
-    // throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
-
     if (!result.ok) {
       console.log("Error fetching firmware:", result.status, result.statusText);
       throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
     }
 
-    this.firmwareBlob = await result.blob();
-    const uint8Array = new Uint8Array(await this.firmwareBlob.arrayBuffer());
-    this.firmwareString = Array.from(uint8Array)
+    const firmwareData = await this.unzipStreamToVariable(result.body!);
+
+    const firmwareDataMP = firmwareData['micropython.bin'];
+
+    this.firmwareString = Array.from(firmwareDataMP)
       .map(byte => String.fromCharCode(byte))
       .join('');
+    
+    // Log the raw firmware data for debugging.
+    console.log('Raw firmware data:', this.firmwareString);
+
+    // this.firmwareBlob = await result.blob();
+    // const uint8Array = new Uint8Array(await this.firmwareBlob.arrayBuffer());
+    // this.firmwareString = Array.from(uint8Array)
+    //   .map(byte => String.fromCharCode(byte))
+    //   .join('');
 
     console.log('Downloaded SFE FIRMWARE. Firmware string size:', this.firmwareString.length);
     return this.firmwareString;

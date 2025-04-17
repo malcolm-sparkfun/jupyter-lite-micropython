@@ -57,7 +57,8 @@
     "@jupyterlite/server": "^0.5.0-alpha.0",
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
-    "esptool-js": "^0.5.4"
+    "esptool-js": "^0.5.4",
+    "unzipit":"^1.4.3"
   },
   "devDependencies": {
     "@jupyterlab/builder": "~4.3.3",
