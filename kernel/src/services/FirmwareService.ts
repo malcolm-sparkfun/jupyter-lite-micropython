@@ -137,8 +137,8 @@ export class FirmwareService {
   setSelectedFirmwareId(id: string): void {
     if (id in this.firmwareOptions) {
       this.selectedFirmwareId = id;
-      this.firmwareString = null;
-      this.firmwareBlob = null;
+      // this.firmwareString = null;
+      // this.firmwareBlob = null;
       localStorage.removeItem('cachedFirmware');
       localStorage.setItem('selectedFirmwareId', id);
     }
