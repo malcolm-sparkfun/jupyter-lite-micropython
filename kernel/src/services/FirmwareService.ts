@@ -2,11 +2,11 @@ import { FirmwareOption } from '../constants'
 import { defaultFirmwareOptions } from '../constants'
 import { DeviceService } from './DeviceService';
 // const { Octokit } = require('@octokit/rest');
-import { unzipit } from 'unzipit';
+import { unzip } from 'unzipit';
 
 export class FirmwareService {
   private firmwareString: string | null = null;
-  private firmwareBlob: Blob | null = null;
+  // private firmwareBlob: Blob | null = null;
   private selectedFirmwareId: string = 'Auto';
   // Should make firmwareOptions a private variable and use getters to access it.
   // This way we can add logic to the getters if we need to in the future. Default to empty record.
@@ -39,7 +39,7 @@ export class FirmwareService {
       chunks.push(value);
     }
     const allChunks = new Uint8Array(chunks.flatMap(chunk => [...chunk]));
-    const { entries } = await unzipit.unzip(allChunks);
+    const { entries } = await unzip(allChunks);
   
     const unzippedData: { [filename: string]: Uint8Array } = {};
     for (const entry of Object.values(entries) as { name: string; arrayBuffer: () => Promise<Uint8Array> }[]) {
@@ -135,7 +135,7 @@ export class FirmwareService {
     if (id in this.firmwareOptions) {
       this.selectedFirmwareId = id;
       this.firmwareString = null;
-      this.firmwareBlob = null;
+      // this.firmwareBlob = null;
       localStorage.removeItem('cachedFirmware');
       localStorage.setItem('selectedFirmwareId', id);
     }
