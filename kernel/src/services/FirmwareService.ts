@@ -234,6 +234,49 @@ export class FirmwareService {
     });
 
     console.log('Result:', result);
+
+    // Now we check the result to see if it's ok and then we can actually read from the body.
+    if (!result.ok) {
+      console.log("Error fetching firmware:", result.status, result.statusText);
+    }
+
+    // stream the response
+    const reader = result.body?.getReader();
+    if (!reader) {
+      throw new Error('Failed to get reader from response body.');
+    }
+
+    let receivedLength = 0; // received bytes
+    const chunks: Uint8Array[] = []; // chunks of received data
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
+      }
+      chunks.push(value);
+      receivedLength += value.length;
+      console.log(`Received ${receivedLength} bytes`);
+    }
+
+    console.log('All chunks received:', chunks);
+
+    // Combine all chunks into a single Uint8Array
+    const chunksAll = new Uint8Array(receivedLength);
+    let position = 0;
+    for (const chunk of chunks) {
+      chunksAll.set(chunk, position); // copy chunk to the final array
+      position += chunk.length; // update position
+    }
+    console.log('All chunks combined:', chunksAll);
+
+    // Convert the Uint8Array to a string
+    const firmwareString = Array.from(chunksAll)
+      .map(byte => String.fromCharCode(byte))
+      .join('');
+
+    console.log('Firmware string:', firmwareString);
+
     throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
 
     // if (!result.ok) {
