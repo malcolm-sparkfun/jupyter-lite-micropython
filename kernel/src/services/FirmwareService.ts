@@ -29,7 +29,7 @@ export class FirmwareService {
   }
 
   private async unzipStreamToVariable(stream: ReadableStream<Uint8Array>): Promise<{ [filename: string]: Uint8Array }> {
-    print("In unzipStreamToVariable method.");
+    console.log('Unzipping stream...');
     const reader = stream.getReader();
     let chunks = [];
     while (true) {
