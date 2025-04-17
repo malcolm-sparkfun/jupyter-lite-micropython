@@ -227,7 +227,8 @@ export class FirmwareService {
 
     const result = await fetch(selectedFirmware.url, {
       headers:{
-        'Accept': 'application/vnd.github+json',
+        // 'Accept': 'application/vnd.github+json',
+        'Accept': 'application/octet-stream',
         'X-GitHub-Api-Version': '2022-11-28',
         // 'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}` // Use your GitHub token here.
       }
