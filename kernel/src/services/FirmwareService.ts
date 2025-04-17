@@ -1,7 +1,7 @@
 import { FirmwareOption } from '../constants'
 import { defaultFirmwareOptions } from '../constants'
 import { DeviceService } from './DeviceService';
-import {Octokit} from '@octokit/rest';
+// const { Octokit } = require('@octokit/rest');
 
 export class FirmwareService {
   private firmwareString: string | null = null;
@@ -67,11 +67,24 @@ export class FirmwareService {
           firmwareId = 'm-' + firmwareId.replace('minimal-', '');
         }
 
-        
+
+        // curl method to download based on ID:
+        // curl -L \
+        // -H "Accept: application/vnd.github+json" \
+        // -H "Authorization: Bearer <YOUR-TOKEN>" \
+        // -H "X-GitHub-Api-Version: 2022-11-28" \
+        // https://api.github.com/repos/OWNER/REPO/releases/assets/ASSET_ID
+
+        //method 1: use the browser_download_url from the asset object.
         //const firmwareUrl = asset.browser_download_url;
+
+        //method 2: use the asset ID to formulate a GET request to the GitHub API with octokit.
         // Instead let's use the asset ID to formulate an GitHub API URL.
         // We'll still use the 'URL' var for now but it's actually a formatted GET req
-        const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
+        //const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
+
+        //method 3: use the asset ID to formulate a direct url to fetch the asset from with similar method as curl.
+        const firmwareUrl = `https://api.github.com/repos/sparkfun/micropython/releases/assets/${asset.id}`;
 
         // log the asset object
         console.log('Asset:', asset);
@@ -178,6 +191,7 @@ export class FirmwareService {
 
     console.log("Performing fetch for firmware:", selectedFirmware.url);
     
+    // method 1: browser_download_url from the asset object.
     // const result = await fetch(selectedFirmware.url, {
     //   mode: 'cors',
     //   headers: {
@@ -188,19 +202,38 @@ export class FirmwareService {
 
     // console.log('Firmware fetch result:', result);
 
-    const octokit = new Octokit({});
+    // method 2: use the asset ID to formulate a GET request to the GitHub API with octokit.
+    // const octokit = new Octokit({});
 
     // firmware URLs from above: const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
-    const response = await octokit.request(selectedFirmware.url, {
-      owner: 'sparkfun',
-      repo: 'micropython',
-      asset_id: selectedFirmware.url.split('/').pop(), // Extract the asset ID from the URL
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
+    // const response = await octokit.request(selectedFirmware.url, {
+    //   owner: 'sparkfun',
+    //   repo: 'micropython',
+    //   asset_id: selectedFirmware.url.split('/').pop(), // Extract the asset ID from the URL
+    //   headers: {
+    //     'X-GitHub-Api-Version': '2022-11-28'
+    //   }
+    // });
+
+    // console.log('Response from GitHub:', response);
+    // throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
+
+    // method 3: use the asset ID to formulate a direct url to fetch the asset from with similar method as curl.
+    // we can look at the headers in the curl command to see what we need to add to our fetch request.
+    // const headers = new Headers({
+    //   'Accept': 'application/vnd.github+json',
+    //   'X-GitHub-Api-Version': '2022-11-28',
+    // });
+
+    const result = await fetch(selectedFirmware.url, {
+      headers:{
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        // 'Authorization': `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}` // Use your GitHub token here.
       }
     });
 
-    console.log('Response from GitHub:', response);
+    console.log('Result:', result);
     throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
 
     // if (!result.ok) {
