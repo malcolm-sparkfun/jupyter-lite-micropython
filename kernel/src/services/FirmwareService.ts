@@ -213,7 +213,8 @@ export class FirmwareService {
 
     const firmwareData = await this.unzipStreamToVariable(result.body!);
 
-    const firmwareDataMP = firmwareData['micropython.bin'];
+    // The firmware file is a zipped file containing the necessary 'micropython.bin' file
+    const firmwareDataMP = firmwareData[`${selectedFirmware.name}/micropython.bin`];
 
     this.firmwareString = Array.from(firmwareDataMP)
       .map(byte => String.fromCharCode(byte))
