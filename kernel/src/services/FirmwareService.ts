@@ -1,6 +1,7 @@
 import { FirmwareOption } from '../constants'
 import { defaultFirmwareOptions } from '../constants'
 import { DeviceService } from './DeviceService';
+import {Octokit} from '@octokit/rest';
 
 export class FirmwareService {
   private firmwareString: string | null = null;
@@ -65,7 +66,12 @@ export class FirmwareService {
         if (firmwareName.startsWith('MINIMAL_')) {
           firmwareId = 'm-' + firmwareId.replace('minimal-', '');
         }
-        const firmwareUrl = asset.browser_download_url;
+
+        
+        //const firmwareUrl = asset.browser_download_url;
+        // Instead let's use the asset ID to formulate an GitHub API URL.
+        // We'll still use the 'URL' var for now but it's actually a formatted GET req
+        const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
 
         // log the asset object
         console.log('Asset:', asset);
@@ -172,15 +178,30 @@ export class FirmwareService {
 
     console.log("Performing fetch for firmware:", selectedFirmware.url);
     
-    const result = await fetch(selectedFirmware.url, {
-      mode: 'cors',
+    // const result = await fetch(selectedFirmware.url, {
+    //   mode: 'cors',
+    //   headers: {
+    //     'Accept': 'application/octet-stream',
+    //   },
+    //   method: 'GET'
+    // });
+
+    // console.log('Firmware fetch result:', result);
+
+    const octokit = new Octokit({});
+
+    // firmware URLs from above: const firmwareUrl = 'GET /repos/sparkfun/micropython/releases/assets/' + asset.id;
+    const response = await octokit.request(selectedFirmware.url, {
+      owner: 'sparkfun',
+      repo: 'micropython',
+      asset_id: selectedFirmware.url.split('/').pop(), // Extract the asset ID from the URL
       headers: {
-        'Accept': 'application/octet-stream',
-      },
-      method: 'GET'
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
     });
 
-    console.log('Firmware fetch result:', result);
+    console.log('Response from GitHub:', response);
+    throw new Error('Purposeful error out during testing.'); // TODO: Remove this line when done testing.
 
     // if (!result.ok) {
     //   console.log("Error fetching firmware:", result.status, result.statusText);
