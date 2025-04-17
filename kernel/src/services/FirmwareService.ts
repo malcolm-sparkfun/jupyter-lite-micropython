@@ -189,10 +189,11 @@ export class FirmwareService {
       throw new Error(`Invalid firmware selection or no URL for: ${firmwareId}`);
     }
 
-    console.log("Performing fetch for firmware:", selectedFirmware.url);
+    const cors_proxy = "https://corsproxy.io/?url=";
+    console.log("Performing fetch for firmware:", cors_proxy + selectedFirmware.url);
     
     // method 1: browser_download_url from the asset object.
-    const result = await fetch(selectedFirmware.url, {
+    const result = await fetch(cors_proxy + selectedFirmware.url, {
       mode: 'cors',
       headers: {
         'Accept': 'application/octet-stream',
