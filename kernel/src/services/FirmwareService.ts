@@ -241,14 +241,14 @@ export class FirmwareService {
     //   throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
     // }
 
-    this.firmwareBlob = await result.blob();
-    const uint8Array = new Uint8Array(await this.firmwareBlob.arrayBuffer());
-    this.firmwareString = Array.from(uint8Array)
-      .map(byte => String.fromCharCode(byte))
-      .join('');
+    // this.firmwareBlob = await result.blob();
+    // const uint8Array = new Uint8Array(await this.firmwareBlob.arrayBuffer());
+    // this.firmwareString = Array.from(uint8Array)
+    //   .map(byte => String.fromCharCode(byte))
+    //   .join('');
 
-    console.log('Downloaded SFE FIRMWARE. Firmware string size:', this.firmwareString.length);
-    return this.firmwareString;
+    // console.log('Downloaded SFE FIRMWARE. Firmware string size:', this.firmwareString.length);
+    // return this.firmwareString;
   }
 
 }
