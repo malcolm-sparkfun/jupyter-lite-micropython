@@ -38,7 +38,7 @@ export class FlashService {
       progressOverlay.show(currentFirmware);
       const loaderOptions = {
         transport: transport,
-        baudrate: 921600,
+        baudrate: 460800,
         romBaudrate: 115600
       };
       const esploader = new ESPLoader(loaderOptions);
@@ -123,7 +123,7 @@ export class FlashService {
       const flashOptions = {
         fileArray: [{
           data: firmwareString,
-          address: 0x0
+          address: 0x10000
         }],
         flashSize: "keep",
         eraseAll: false,
