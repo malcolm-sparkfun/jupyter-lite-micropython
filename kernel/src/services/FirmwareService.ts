@@ -29,6 +29,7 @@ export class FirmwareService {
   }
 
   private async unzipStreamToVariable(stream: ReadableStream<Uint8Array>): Promise<{ [filename: string]: Uint8Array }> {
+    print("In unzipStreamToVariable method.");
     const reader = stream.getReader();
     let chunks = [];
     while (true) {
@@ -38,11 +39,14 @@ export class FirmwareService {
       }
       chunks.push(value);
     }
+  
     const allChunks = new Uint8Array(chunks.flatMap(chunk => [...chunk]));
+    console.log('All chunks:', allChunks);
     const { entries } = await unzip(allChunks);
   
     const unzippedData: { [filename: string]: Uint8Array } = {};
     for (const entry of Object.values(entries) as { name: string; arrayBuffer: () => Promise<ArrayBuffer> }[]) {
+      console.log('Entry:', entry.name);
       const arrayBuffer = await entry.arrayBuffer();
       unzippedData[entry.name] = new Uint8Array(arrayBuffer);
     }
