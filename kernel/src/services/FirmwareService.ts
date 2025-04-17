@@ -42,8 +42,9 @@ export class FirmwareService {
     const { entries } = await unzip(allChunks);
   
     const unzippedData: { [filename: string]: Uint8Array } = {};
-    for (const entry of Object.values(entries) as { name: string; arrayBuffer: () => Promise<Uint8Array> }[]) {
-      unzippedData[entry.name] = new Uint8Array(await entry.arrayBuffer());
+    for (const entry of Object.values(entries) as { name: string; arrayBuffer: () => Promise<ArrayBuffer> }[]) {
+      const arrayBuffer = await entry.arrayBuffer();
+      unzippedData[entry.name] = new Uint8Array(arrayBuffer);
     }
     return unzippedData;
   }
