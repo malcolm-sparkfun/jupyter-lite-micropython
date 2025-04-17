@@ -209,6 +209,8 @@ export class FirmwareService {
       throw new Error(`Failed to fetch firmware: ${result.status} ${result.statusText}`);
     }
 
+    console.log("Firmware fetch result:", result);
+
     const firmwareData = await this.unzipStreamToVariable(result.body!);
 
     const firmwareDataMP = firmwareData['micropython.bin'];
