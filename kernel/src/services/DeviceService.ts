@@ -141,9 +141,11 @@ export class DeviceService {
 
       if (code.includes(reconnectString)) {
         // Reconnect the device or connect for the first time
-        
         console.log('Reconnect command detected, reconnecting device...');
-
+        await this.disconnect();
+        await this.connect();
+        console.log('Device reconnected');
+        this.isDeviceConnected = true;
       }
  
       
