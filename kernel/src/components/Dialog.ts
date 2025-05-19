@@ -1,6 +1,6 @@
 import { Card } from './Card';
 import { FlashCard } from './FlashCard';
-import { ConnectCard } from './ConnectCard';
+// import { ConnectCard } from './ConnectCard';
 import { ServiceContainer } from '../services/ServiceContainer';
 
 export interface DialogProps {
@@ -10,7 +10,7 @@ export interface DialogProps {
 
 export class Dialog {
   private element: HTMLDivElement;
-  private connectCard: ConnectCard;
+  // private connectCard: ConnectCard;
   private flashCard: FlashCard;
   private resetCard: Card;
 
@@ -27,15 +27,15 @@ export class Dialog {
     const header = this.createHeader();
     const optionsContainer = this.createOptionsContainer();
 
-    this.connectCard = new ConnectCard(
-      {
-        action: 'connect',
-        icon: '🔌',
-        title: 'Connect Device',
-        description: 'Connect to RedBoard via serial',
-        color: 'var(--ui-navy)'
-      },
-      props.serviceContainer.deviceService);
+    // this.connectCard = new ConnectCard(
+    //   {
+    //     action: 'connect',
+    //     icon: '🔌',
+    //     title: 'Connect Device',
+    //     description: 'Connect to RedBoard via serial',
+    //     color: 'var(--ui-navy)'
+    //   },
+    //   props.serviceContainer.deviceService);
 
     this.flashCard = new FlashCard({
       action: 'flash',
