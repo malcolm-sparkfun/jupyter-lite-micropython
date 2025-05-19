@@ -124,6 +124,7 @@ export class DeviceService {
   }
 
   async sendCommand(code: string): Promise<boolean> {
+    console.log('Before reconnect check');
     if (code.includes(reconnectString)) {
       // Reconnect the device or connect for the first time
       console.log('Reconnect command detected, reconnecting device...');
@@ -132,6 +133,7 @@ export class DeviceService {
       await this.connect();
       console.log('Device connected');
     }
+    console.log('After reconnect check');
 
     if (!this.transport || !this.transport.device.writable) {
       return false;
