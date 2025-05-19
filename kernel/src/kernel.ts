@@ -2,6 +2,8 @@ import { BaseKernel } from '@jupyterlite/kernel';
 import { KernelMessage } from '@jupyterlab/services';
 import { ServiceContainer } from './services/ServiceContainer';
 
+const reconnectString: string = "%connect%"
+
 export class EmbeddedKernel extends BaseKernel {
 
   constructor(options: any, private serviceContainer: ServiceContainer) {
@@ -57,6 +59,17 @@ export class EmbeddedKernel extends BaseKernel {
     const { code } = content;
     console.log("GOT CODE AT KERNEL LEVEL: ", code);
     console.log("Type of CODE AT KERNEL LEVEL: ", typeof code);
+
+    console.log('Before reconnect check');
+    if (code.includes(reconnectString)) {
+      // Reconnect the device or connect for the first time
+      console.log('Reconnect command detected, reconnecting device...');
+      await this.serviceContainer.deviceService.disconnect();
+      console.log('Device disconnected');
+      await this.serviceContainer.deviceService.connect();
+      console.log('Device connected');
+    }
+    console.log('After reconnect check');
 
     try {
       console.log("[Kernel] executeRequest - Checking transport");

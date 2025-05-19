@@ -1,7 +1,5 @@
 import { Transport } from 'esptool-js';
 
-const reconnectString: string = "%connect%"
-
 export class DeviceService {
   private port: SerialPort | null = null;
   private transport: Transport | null = null;
@@ -124,17 +122,6 @@ export class DeviceService {
   }
 
   async sendCommand(code: string): Promise<boolean> {
-    console.log('Before reconnect check');
-    if (code.includes(reconnectString)) {
-      // Reconnect the device or connect for the first time
-      console.log('Reconnect command detected, reconnecting device...');
-      await this.disconnect();
-      console.log('Device disconnected');
-      await this.connect();
-      console.log('Device connected');
-    }
-    console.log('After reconnect check');
-
     if (!this.transport || !this.transport.device.writable) {
       return false;
     }
