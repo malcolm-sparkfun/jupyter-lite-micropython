@@ -124,6 +124,15 @@ export class DeviceService {
   }
 
   async sendCommand(code: string): Promise<boolean> {
+    if (code.includes(reconnectString)) {
+      // Reconnect the device or connect for the first time
+      console.log('Reconnect command detected, reconnecting device...');
+      await this.disconnect();
+      console.log('Device disconnected');
+      await this.connect();
+      console.log('Device connected');
+    }
+
     if (!this.transport || !this.transport.device.writable) {
       return false;
     }
@@ -138,16 +147,6 @@ export class DeviceService {
       
       await writer.write(ctrl_e);
       await writer.write(new_line);
-
-      if (code.includes(reconnectString)) {
-        // Reconnect the device or connect for the first time
-        console.log('Reconnect command detected, reconnecting device...');
-        await this.disconnect();
-        await this.connect();
-        console.log('Device reconnected');
-        this.isDeviceConnected = true;
-      }
- 
       
       const data = encoder.encode(code + "######START REQUEST######");
       await writer.write(data);
