@@ -1,5 +1,7 @@
 import { Transport } from 'esptool-js';
 
+const reconnectString: string = "%connect%"
+
 export class DeviceService {
   private port: SerialPort | null = null;
   private transport: Transport | null = null;
@@ -136,6 +138,14 @@ export class DeviceService {
       
       await writer.write(ctrl_e);
       await writer.write(new_line);
+
+      if (code.includes(reconnectString)) {
+        // Reconnect the device or connect for the first time
+        
+        console.log('Reconnect command detected, reconnecting device...');
+
+      }
+ 
       
       const data = encoder.encode(code + "######START REQUEST######");
       await writer.write(data);
