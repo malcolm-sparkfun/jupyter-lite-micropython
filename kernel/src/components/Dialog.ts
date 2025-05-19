@@ -56,7 +56,7 @@ export class Dialog {
       color: 'var(--ui-red)'
     }, () => props.serviceContainer.deviceService.reset());
 
-    optionsContainer.appendChild(this.connectCard.getElement());
+    // optionsContainer.appendChild(this.connectCard.getElement());
     optionsContainer.appendChild(this.flashCard.getElement());
     optionsContainer.appendChild(this.resetCard.getElement());
 
