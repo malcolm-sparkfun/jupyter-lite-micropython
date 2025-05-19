@@ -55,6 +55,8 @@ export class EmbeddedKernel extends BaseKernel {
 
     console.log("[Kernel] executeRequest - Processing code");
     const { code } = content;
+    console.log("GOT CODE AT KERNEL LEVEL: ", code);
+    console.log("Type of CODE AT KERNEL LEVEL: ", typeof code);
 
     try {
       console.log("[Kernel] executeRequest - Checking transport");
