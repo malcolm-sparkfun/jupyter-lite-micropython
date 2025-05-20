@@ -66,9 +66,19 @@ export class EmbeddedKernel extends BaseKernel {
       console.log('Device disconnected');
       await this.serviceContainer.deviceService.connect();
       console.log('Device connected');
-      this.stream("Device Connected!")
+      this.stream(
+        {
+          name: 'stdout',
+          text: "Device Connected!"
+        }
+      )
     }
-    this.stream("Device Try Connect Done!")
+    this.stream(
+      {
+        name: 'stdout',
+        text: "Device Connect Done!"
+      }
+    )
     console.log('After reconnect check');
 
     try {
