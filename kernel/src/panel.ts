@@ -1,7 +1,7 @@
 import { globalStyles, animations, overlayStyles, dialogStyles, minimizedStyles, cardStyles, buttonStyles, progressOverlayStyles } from './styles';
 import { MinimizedButton } from './components/MinimizedButton';
-import { Dialog } from './components/Dialog';
-import { ServiceContainer } from './services/ServiceContainer';
+// import { Dialog } from './components/Dialog';
+// import { ServiceContainer } from './services/ServiceContainer';
 
 // class DialogPanel {
 //   private element: HTMLDivElement;
