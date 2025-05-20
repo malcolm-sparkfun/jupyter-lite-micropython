@@ -39,6 +39,17 @@ export class EmbeddedKernel extends BaseKernel {
     await this.serviceContainer.deviceService.sendInterrupt();
   }
 
+  outputResponse(msg: string): void {
+    console.log("[Kernel] outputResponse - Streaming output:", msg);
+    
+    msg += '\n';
+    
+    this.stream(){
+      name: 'stdout',
+      text: msg,
+    }
+  }
+
   async executeRequest(
     content: KernelMessage.IExecuteRequestMsg['content'],
   ): Promise<KernelMessage.IExecuteReplyMsg['content']> {
@@ -58,28 +69,13 @@ export class EmbeddedKernel extends BaseKernel {
     console.log("[Kernel] executeRequest - Processing code");
     const { code } = content;
 
-    console.log('Before reconnect check');
     if (code.includes(reconnectString)) {
       // Reconnect the device or connect for the first time
-      console.log('Reconnect command detected, reconnecting device...');
+      this.outputResponse("Reconnect command detected, reconnecting device...");
       await this.serviceContainer.deviceService.disconnect();
-      console.log('Device disconnected');
       await this.serviceContainer.deviceService.connect();
-      console.log('Device connected');
-      this.stream(
-        {
-          name: 'stdout',
-          text: "Device Connected!"
-        }
-      )
+      this.outputResponse('Device Connected!');
     }
-    this.stream(
-      {
-        name: 'stdout',
-        text: "Device Connect Done!"
-      }
-    )
-    console.log('After reconnect check');
 
     try {
       console.log("[Kernel] executeRequest - Checking transport");
