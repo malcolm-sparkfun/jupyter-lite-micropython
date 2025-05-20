@@ -57,8 +57,6 @@ export class EmbeddedKernel extends BaseKernel {
 
     console.log("[Kernel] executeRequest - Processing code");
     const { code } = content;
-    console.log("GOT CODE AT KERNEL LEVEL: ", code);
-    console.log("Type of CODE AT KERNEL LEVEL: ", typeof code);
 
     console.log('Before reconnect check');
     if (code.includes(reconnectString)) {
@@ -68,7 +66,9 @@ export class EmbeddedKernel extends BaseKernel {
       console.log('Device disconnected');
       await this.serviceContainer.deviceService.connect();
       console.log('Device connected');
+      this.stream("Device Connected!")
     }
+    this.stream("Device Try Connect Done!")
     console.log('After reconnect check');
 
     try {
@@ -86,6 +86,8 @@ export class EmbeddedKernel extends BaseKernel {
         };
       }
       
+      
+
       console.log("[Kernel] executeRequest - Executing command via ConsoleService");
       // Execute the command and handle the output
       const result = await this.serviceContainer.consoleService.executeCommand(code, (content) => {

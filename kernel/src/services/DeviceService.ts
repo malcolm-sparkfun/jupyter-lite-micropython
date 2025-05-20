@@ -21,9 +21,7 @@ export class DeviceService {
   }
 
   async connect(): Promise<void> {
-    if (!this.port) {
-      await this.requestPort();
-    }
+    await this.requestPort();
 
     if (!this.port) {
       throw new Error('No port selected');
