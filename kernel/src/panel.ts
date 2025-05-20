@@ -3,40 +3,40 @@ import { MinimizedButton } from './components/MinimizedButton';
 import { Dialog } from './components/Dialog';
 import { ServiceContainer } from './services/ServiceContainer';
 
-class DialogPanel {
-  private element: HTMLDivElement;
+// class DialogPanel {
+//   private element: HTMLDivElement;
 
-  constructor(dialog: Dialog) {
-    this.element = document.createElement('div');
-    this.element.id = 'dialog-widget-panel';
-    this.element.appendChild(dialog.getElement());
-  }
+//   constructor(dialog: Dialog) {
+//     this.element = document.createElement('div');
+//     this.element.id = 'dialog-widget-panel';
+//     this.element.appendChild(dialog.getElement());
+//   }
 
-  show(): void {
-    this.element.style.display = 'block';
-    this.element.classList.remove('minimized');
-    this.element.classList.add('visible');
+//   show(): void {
+//     this.element.style.display = 'block';
+//     this.element.classList.remove('minimized');
+//     this.element.classList.add('visible');
 
-    this.element.style.transition = 'opacity 0.3s ease-in-out';
-    this.element.style.opacity = '1';
-  }
+//     this.element.style.transition = 'opacity 0.3s ease-in-out';
+//     this.element.style.opacity = '1';
+//   }
 
-  hide(): void {
-    this.element.classList.add('minimizing');
-    this.element.classList.remove('visible');
-    this.element.style.opacity = '0';
+//   hide(): void {
+//     this.element.classList.add('minimizing');
+//     this.element.classList.remove('visible');
+//     this.element.style.opacity = '0';
 
-    setTimeout(() => {
-      this.element.style.display = 'none';
-      this.element.classList.remove('minimizing');
-      this.element.classList.add('minimized');
-    }, 300);
-  }
+//     setTimeout(() => {
+//       this.element.style.display = 'none';
+//       this.element.classList.remove('minimizing');
+//       this.element.classList.add('minimized');
+//     }, 300);
+//   }
 
-  getElement(): HTMLDivElement {
-    return this.element;
-  }
-}
+//   getElement(): HTMLDivElement {
+//     return this.element;
+//   }
+// }
 
 class MinimizedPanel {
   private element: HTMLDivElement;
@@ -91,7 +91,7 @@ export default class WelcomePanel {
   private minimizedPanel: MinimizedPanel;
   // private dialogPanel: DialogPanel;
 
-  constructor(private serviceContainer: ServiceContainer) {
+  constructor() {
 
     this.element = document.createElement('div');
     this.element.id = 'jp-kernel-welcome-panel';
