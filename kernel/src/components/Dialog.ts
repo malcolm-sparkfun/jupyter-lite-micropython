@@ -27,15 +27,6 @@ export class Dialog {
     const header = this.createHeader();
     const optionsContainer = this.createOptionsContainer();
 
-    // this.connectCard = new ConnectCard(
-    //   {
-    //     action: 'connect',
-    //     icon: '🔌',
-    //     title: 'Connect Device',
-    //     description: 'Connect to RedBoard via serial',
-    //     color: 'var(--ui-navy)'
-    //   },
-    //   props.serviceContainer.deviceService);
 
     this.flashCard = new FlashCard({
       action: 'flash',

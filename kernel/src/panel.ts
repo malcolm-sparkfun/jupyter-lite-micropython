@@ -89,7 +89,7 @@ export default class WelcomePanel {
   private element: HTMLDivElement;
 
   private minimizedPanel: MinimizedPanel;
-  private dialogPanel: DialogPanel;
+  // private dialogPanel: DialogPanel;
 
   constructor(private serviceContainer: ServiceContainer) {
 
@@ -112,14 +112,14 @@ export default class WelcomePanel {
     const minimizedButton = new MinimizedButton(() => this.show());
     this.minimizedPanel = new MinimizedPanel(minimizedButton);
 
-    const dialog = new Dialog({
-      closeDialog: () => this.hide(),
-      serviceContainer: this.serviceContainer,
-    });
-    this.dialogPanel = new DialogPanel(dialog);
+    // const dialog = new Dialog({
+    //   closeDialog: () => this.hide(),
+    //   serviceContainer: this.serviceContainer,
+    // });
+    // this.dialogPanel = new DialogPanel(dialog);
 
     this.element.appendChild(this.minimizedPanel.getElement());
-    this.element.appendChild(this.dialogPanel.getElement());
+    // this.element.appendChild(this.dialogPanel.getElement());
 
     document.addEventListener('deviceConnected', (event: Event) => {
       const customEvent = event as CustomEvent;
@@ -163,12 +163,12 @@ export default class WelcomePanel {
     this.element.style.transition = 'opacity 0.3s ease-in-out';
     this.element.style.opacity = '1';
 
-    this.dialogPanel.show();
+    // this.dialogPanel.show();
     this.minimizedPanel.hide();
   }
 
   hide(): void {
-    this.dialogPanel.hide();
+    // this.dialogPanel.hide();
     this.minimizedPanel.show();
   }
 }
