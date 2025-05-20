@@ -54,14 +54,13 @@ export class DeviceService {
   async disconnect(): Promise<void> {
     if (this.port) {
       try {
-        if ((this.port.readable && this.port.readable.locked) ||
-            (this.port.writable && this.port.writable.locked)) {
-          console.warn('Serial port has locked streams. Cannot close directly.');
-          this.isDeviceConnected = false;
-          return;
-        }
+        if (this.port.readable)
+          await this.port.readable.cancel();
+        else if (this.port.writable)
+          await this.port.writable.abort();
+        else
+          await this.port.close();
         
-        await this.port.close();
         console.log('Device disconnected successfully');
       } catch (err) {
         console.error('Failed to disconnect:', err);
