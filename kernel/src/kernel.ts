@@ -41,13 +41,13 @@ export class EmbeddedKernel extends BaseKernel {
 
   outputResponse(msg: string): void {
     console.log("[Kernel] outputResponse - Streaming output:", msg);
-    
+
     msg += '\n';
     
-    this.stream(){
+    this.stream({
       name: 'stdout',
       text: msg,
-    }
+    })
   }
 
   async executeRequest(
@@ -68,6 +68,7 @@ export class EmbeddedKernel extends BaseKernel {
 
     console.log("[Kernel] executeRequest - Processing code");
     const { code } = content;
+
 
     if (code.includes(reconnectString)) {
       // Reconnect the device or connect for the first time
