@@ -41,7 +41,7 @@ export class EmbeddedKernel extends BaseKernel {
 
   outputResponse(msg: string): void {
     console.log("[Kernel] outputResponse - Streaming output:", msg);
-
+    
     msg += '\n';
     
     this.stream({
@@ -74,7 +74,7 @@ export class EmbeddedKernel extends BaseKernel {
       // Reconnect the device or connect for the first time
       this.outputResponse("Reconnect command detected, reconnecting device...");
       await this.serviceContainer.deviceService.disconnect();
-      await this.serviceContainer.deviceService.connect(this.outputResponse);
+      await this.serviceContainer.deviceService.connect(this.outputResponse.bind(this));
     }
 
     try {

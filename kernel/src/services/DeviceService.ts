@@ -70,7 +70,7 @@ export class DeviceService {
     }
 
     if (!this.portChecked) {
-      logCallback('Port cannot be opened.\nIs the port already open in another application or tab?');
+      logCallback('Port cannot be opened.\nDid you select the correct port?\nIs the port already open in another application or tab?');
       return;
     }
 
@@ -92,6 +92,7 @@ export class DeviceService {
       throw err;
     }
     
+    logCallback('Connected!');
     const event = new CustomEvent("deviceConnected", {
         detail: { msg: "Connected" }
     });
