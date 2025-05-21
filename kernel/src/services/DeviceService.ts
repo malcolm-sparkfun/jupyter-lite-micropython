@@ -9,6 +9,41 @@ export class DeviceService {
 
   constructor() {}
 
+  // Check if port is available (return true if available)
+  // Don't run if we are already connected from within this tab
+  async checkPort(): Promise<boolean> {
+    if (!this.port) {
+      console.log('[checkPort]: No port selected');
+      return false;
+    }
+
+    // Return false if the port is already open by us
+    if (this.port.readable || this.port.writable) {
+      console.log('[checkPort]: Port is already open by us...skipping check');
+      return false;
+    }
+
+    // Try opening and closing the port to check if it's available
+    try {
+      await this.port.open({ baudRate: 115200 });
+    }
+    catch (err) {
+      if (err instanceof DOMException && err.name === 'InvalidStateError') {
+        console.error('[checkPort]: Port is already open by another application');
+        return false;
+      }
+    }
+    finally {
+      if (this.port) {
+        await this.port.close();
+      }
+    }
+
+    // If we reach here, the port is available
+    console.log('[checkPort]: Port is available');
+    return true;
+  }
+
   async requestPort(): Promise<void> {
     try {
       const port = await navigator.serial.requestPort();
@@ -16,15 +51,14 @@ export class DeviceService {
           
       // Check if the port is open by another application (or ourselves in another tab)
       
-      // Perform a quick open and close of port to check if it's already open
-      if (this.port.readable || this.port.writable) {
-        console.log('[requestPort]: Port is already open, skipping request');
-        return;
+      if (!await this.checkPort()) {
+        console.log('[requestPort]: Port is already open by another application');
+        // throw new Error('Port is already open by another application');
       }
-      else {
-        console.log('[requestPort]: Port is not open, requesting port');
+      else{
+        console.log('[requestPort]: Port is available');
+        this.transport = new Transport(port);
       }
-      this.transport = new Transport(port);
 
     } catch (err) {
       console.error('[requestPort]: Failed to get port:', err);
