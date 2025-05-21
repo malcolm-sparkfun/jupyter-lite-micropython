@@ -19,6 +19,9 @@ export class DeviceService {
         console.log('Port is already open, skipping request');
         return;
       }
+      else {
+        console.log('Port is not open, requesting transport for port');
+      }
 
       this.transport = new Transport(port);
 
