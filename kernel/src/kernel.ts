@@ -74,8 +74,7 @@ export class EmbeddedKernel extends BaseKernel {
       // Reconnect the device or connect for the first time
       this.outputResponse("Reconnect command detected, reconnecting device...");
       await this.serviceContainer.deviceService.disconnect();
-      await this.serviceContainer.deviceService.connect();
-      this.outputResponse('Device Connected!');
+      await this.serviceContainer.deviceService.connect(this.outputResponse);
     }
 
     try {

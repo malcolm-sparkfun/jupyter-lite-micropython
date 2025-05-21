@@ -2,6 +2,7 @@ import { Transport } from 'esptool-js';
 
 export class DeviceService {
   private port: SerialPort | null = null;
+  private portChecked: boolean = false;
   private transport: Transport | null = null;
   private isDeviceConnected: boolean = false;
   private deviceType: string = '';
@@ -45,14 +46,13 @@ export class DeviceService {
       this.port = port;
           
       // Check if the port is open by another application (or ourselves in another tab)
-      
-      if (!await this.checkPort()) {
-        console.log('[requestPort]: Port is already open by another application');
-        // throw new Error('Port is already open by another application');
-      }
-      else{
+      this.portChecked = await this.checkPort()
+      if (this.portChecked) {
         console.log('[requestPort]: Port is available');
         this.transport = new Transport(port);
+      }
+      else{
+        console.log('[requestPort]: Port is already open by another application');
       }
 
     } catch (err) {
@@ -61,28 +61,32 @@ export class DeviceService {
     }
   }
 
-  async connect(): Promise<void> {
+  async connect(logCallback: (msg: string) => void = console.log): Promise<void> {
     await this.requestPort();
 
     if (!this.port) {
-      throw new Error('No port selected');
+      logCallback('No port selected, try again.');
+    }
+
+    if (!this.portChecked) {
+      logCallback('Port cannot be opened.\nIs the port already open in another application or tab?');
     }
 
     try {
       if (this.isDeviceConnected) {
-        console.log('Already connected, skipping connection');
+        logCallback('Already connected, skipping connection');
         return;
       }
       
       if (!this.port.readable && !this.port.writable) {
         this.transport?.connect()
       } else {
-        console.log('Port is already open, skipping connection');
+        logCallback('Port is already open, skipping connection');
       }
       
       this.isDeviceConnected = true;
     } catch (err) {
-      console.error('Failed to connect:', err);
+      logCallback('Failed to connect:', err);
       throw err;
     }
     
