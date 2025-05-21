@@ -29,7 +29,7 @@ export class DeviceService {
     }
     catch (err) {
       if (err instanceof DOMException && err.name === 'InvalidStateError') {
-        console.error('[checkPort]: Port is already open by another application');
+        console.log('[checkPort]: Port is already open by another application');
         return false;
       }
     }
