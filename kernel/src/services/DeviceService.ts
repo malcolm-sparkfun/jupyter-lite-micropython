@@ -26,20 +26,13 @@ export class DeviceService {
     // Try opening and closing the port to check if it's available
     try {
       await this.port.open({ baudRate: 115200 });
+      await this.port.close();
     }
     catch (err) {
       if (err instanceof DOMException && err.name === 'InvalidStateError') {
         console.log('[checkPort]: Port is already open by another application');
         return false;
       }
-    }
-
-    try{
-      await this.port.close();
-    }
-    catch (err) {
-      console.error('[checkPort]: Failed to close port:', err);
-      return false;
     }
 
     // If we reach here, the port is available
