@@ -13,7 +13,16 @@ export class DeviceService {
     try {
       const port = await navigator.serial.requestPort();
       this.port = port;
+          
+      // Check if the port is open by another application (or ourselves in another tab)
+      if (this.port.readable && this.port.writable) {
+        console.log('Port is already open, skipping request');
+        return;
+      }
+
       this.transport = new Transport(port);
+
+
     } catch (err) {
       console.error('Failed to get port:', err);
       throw err;
