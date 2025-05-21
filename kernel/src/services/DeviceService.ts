@@ -66,10 +66,12 @@ export class DeviceService {
 
     if (!this.port) {
       logCallback('No port selected, try again.');
+      return;
     }
 
     if (!this.portChecked) {
       logCallback('Port cannot be opened.\nIs the port already open in another application or tab?');
+      return;
     }
 
     try {
@@ -86,7 +88,7 @@ export class DeviceService {
       
       this.isDeviceConnected = true;
     } catch (err) {
-      logCallback('Failed to connect:', err);
+      logCallback('Failed to connect:');
       throw err;
     }
     
