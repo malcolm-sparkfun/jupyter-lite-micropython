@@ -33,10 +33,13 @@ export class DeviceService {
         return false;
       }
     }
-    finally {
-      if (this.port) {
-        await this.port.close();
-      }
+
+    try{
+      await this.port.close();
+    }
+    catch (err) {
+      console.error('[checkPort]: Failed to close port:', err);
+      return false;
     }
 
     // If we reach here, the port is available
