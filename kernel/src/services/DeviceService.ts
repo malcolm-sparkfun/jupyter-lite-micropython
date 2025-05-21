@@ -15,19 +15,19 @@ export class DeviceService {
       this.port = port;
           
       // Check if the port is open by another application (or ourselves in another tab)
-      if (this.port.readable && this.port.writable) {
-        console.log('Port is already open, skipping request');
+      
+      // Perform a quick open and close of port to check if it's already open
+      if (this.port.readable || this.port.writable) {
+        console.log('[requestPort]: Port is already open, skipping request');
         return;
       }
       else {
-        console.log('Port is not open, requesting transport for port');
+        console.log('[requestPort]: Port is not open, requesting port');
       }
-
       this.transport = new Transport(port);
 
-
     } catch (err) {
-      console.error('Failed to get port:', err);
+      console.error('[requestPort]: Failed to get port:', err);
       throw err;
     }
   }
