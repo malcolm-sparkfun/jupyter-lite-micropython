@@ -180,7 +180,7 @@ export default class WelcomePanel {
     this.element.style.transition = 'opacity 0.3s ease-in-out';
     this.element.style.opacity = '1';
 
-    // this.dialogPanel.show();
+    this.dialogPanel.show();
     //this.minimizedPanel.hide();
     this.minimizedPanel.show();
   }
