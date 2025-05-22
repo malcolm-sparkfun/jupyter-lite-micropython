@@ -91,7 +91,8 @@ export default class WelcomePanel {
   private minimizedPanel: MinimizedPanel;
   // private dialogPanel: DialogPanel;
 
-  constructor(private serviceContainer: ServiceContainer) {
+  // constructor(private serviceContainer: ServiceContainer) {
+  constructor() {
 
     this.element = document.createElement('div');
     this.element.id = 'jp-kernel-welcome-panel';
