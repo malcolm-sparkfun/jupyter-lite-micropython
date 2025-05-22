@@ -1,6 +1,4 @@
-import { Card } from './Card';
-import { FlashCard } from './FlashCard';
-// import { ConnectCard } from './ConnectCard';
+import { ConnectCard } from './ConnectCard';
 import { ServiceContainer } from '../services/ServiceContainer';
 
 export interface DialogProps {
@@ -10,9 +8,7 @@ export interface DialogProps {
 
 export class Dialog {
   private element: HTMLDivElement;
-  // private connectCard: ConnectCard;
-  private flashCard: FlashCard;
-  private resetCard: Card;
+  private connectCard: ConnectCard;
 
   constructor(props: DialogProps) {
     this.element = document.createElement('div');
@@ -27,38 +23,17 @@ export class Dialog {
     const header = this.createHeader();
     const optionsContainer = this.createOptionsContainer();
 
-    // this.connectCard = new ConnectCard(
-    // {
-    //   action: 'connect',
-    //   icon: '🔌',
-    //   title: 'Connect Device',
-    //   description: 'Connect to RedBoard via serial',
-    //   color: 'var(--ui-navy)'
-    // },
-    // props.serviceContainer.deviceService);
-    
-    this.flashCard = new FlashCard({
-      action: 'flash',
-      icon: '⚡️',
-      title: 'Flash Device',
-      description: 'Flash your device with the latest firmware',
-      color: 'var(--ui-red)'
-    }, 
-    () => props.serviceContainer.flashService.flashDevice(),
-    props.serviceContainer.firmwareService,
+    this.connectCard = new ConnectCard(
+    {
+      action: 'connect',
+      icon: '🔌',
+      title: 'Connect Device',
+      description: 'Connect to RedBoard via serial',
+      color: 'var(--ui-navy)'
+    },
     props.serviceContainer.deviceService);
 
-    this.resetCard = new Card({
-      action: 'reset-esp',
-      icon: '🔄',
-      title: 'Hard reset Esp',
-      description: 'Hard reset esp chip',
-      color: 'var(--ui-red)'
-    }, () => props.serviceContainer.deviceService.reset());
-
-    // optionsContainer.appendChild(this.connectCard.getElement());
-    optionsContainer.appendChild(this.flashCard.getElement());
-    optionsContainer.appendChild(this.resetCard.getElement());
+    optionsContainer.appendChild(this.connectCard.getElement());
 
     let content = document.createElement('div');
     content.className = 'welcome-dialog';
