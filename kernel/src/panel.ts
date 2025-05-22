@@ -1,7 +1,7 @@
 import { globalStyles, animations, overlayStyles, dialogStyles, minimizedStyles, cardStyles, buttonStyles, progressOverlayStyles } from './styles';
 import { MinimizedButton } from './components/MinimizedButton';
 // import { Dialog } from './components/Dialog';
-// import { ServiceContainer } from './services/ServiceContainer';
+import { ServiceContainer } from './services/ServiceContainer';
 
 // class DialogPanel {
 //   private element: HTMLDivElement;
@@ -91,7 +91,7 @@ export default class WelcomePanel {
   private minimizedPanel: MinimizedPanel;
   // private dialogPanel: DialogPanel;
 
-  constructor() {
+  constructor(private serviceContainer: ServiceContainer) {
 
     this.element = document.createElement('div');
     this.element.id = 'jp-kernel-welcome-panel';
@@ -108,6 +108,21 @@ export default class WelcomePanel {
       progressOverlayStyles
     ].join('\n');
     document.head.appendChild(styleElement);
+
+    // TODO: 
+    // 1) We no longer want the dialog to be shown on startup and we also don't want it 
+    // to be shown when the user clicks on the minimized button.
+    // 2) We want to act as if the connect card was clicked when the user clicks on the minimized button.
+    // 3) We want there to be a new popup if connecting to the device fails that contains suggestions for why
+    
+    // currently objects are like this:
+
+    // WelcomePanel -> MinimizedPanel -> MinimizedButton -> DeviceService    <-|
+    // WelcomePanel -> DialogPanel -> Dialog -> ConnectCard -> DeviceService <-|
+    // We want to change this to be like this:
+    // WelcomePanel -> MinimizedPanel -> MinimizedButton -> DeviceService
+
+    // need a good way to add the same connection behavior but up a level
 
     const minimizedButton = new MinimizedButton(() => this.show());
     this.minimizedPanel = new MinimizedPanel(minimizedButton);
@@ -156,6 +171,7 @@ export default class WelcomePanel {
   }
 
   show(): void {
+    // This is where we will do or invoke the toggling of the connection
     this.element.style.display = 'block';
     this.element.classList.remove('minimized');
     this.element.classList.add('visible');
@@ -164,7 +180,7 @@ export default class WelcomePanel {
     this.element.style.opacity = '1';
 
     // this.dialogPanel.show();
-    this.minimizedPanel.hide();
+    //this.minimizedPanel.hide();
   }
 
   hide(): void {
