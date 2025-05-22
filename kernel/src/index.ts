@@ -47,7 +47,9 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         document.body.appendChild(welcomePanel.getElement());
         const kernel = new EmbeddedKernel(options, serviceContainer);
 
-        welcomePanel.show();
+        // welcomePanel.show();
+        welcomePanel.initialShow();
+        
         await kernel.ready;
 
         activeKernels.set(kernel.id, kernel);

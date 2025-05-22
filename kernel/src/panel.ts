@@ -183,6 +183,19 @@ export default class WelcomePanel {
     this.dialogPanel.show();
     //this.minimizedPanel.hide();
     this.minimizedPanel.show();
+    this.minimizedPanel.hide();
+  }
+
+  initialShow(): void {
+    this.element.style.display = 'block';
+    this.element.classList.remove('minimized');
+    this.element.classList.add('visible');
+
+    this.element.style.transition = 'opacity 0.3s ease-in-out';
+    this.element.style.opacity = '1';
+
+    this.dialogPanel.hide();
+    this.minimizedPanel.show();
   }
 
   hide(): void {
