@@ -19,7 +19,7 @@ export class ConsoleService {
     
     let buffer = '';
     let outputStarted = false;
-    let timeout = 10000;
+    let timeout = 100000;
     const startTime = Date.now();
 
     try {
