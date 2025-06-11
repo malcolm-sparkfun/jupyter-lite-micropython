@@ -5,7 +5,7 @@ import { ServiceContainer } from './services/ServiceContainer';
 const reconnectString: string = "%connect%"
 const saveString: string = "%save%";
 const bootFileName: string = "boot.py";
-const bootSavePrefix: string = `with open(${bootFileName}, 'w') as f:\n    f.write('''\n`;
+const bootSavePrefix: string = `with open('${bootFileName}', 'w') as f:\n    f.write('''\n`;
 const bootSaveSuffix: string = "\n''')\n";
 
 export class EmbeddedKernel extends BaseKernel {
