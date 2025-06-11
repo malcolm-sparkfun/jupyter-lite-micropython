@@ -4,7 +4,7 @@ import { ServiceContainer } from './services/ServiceContainer';
 
 const reconnectString: string = "%connect%"
 const saveString: string = "%save%";
-const bootFileName: string = "/main.py";
+const bootFileName: string = "main.py";
 const bootSavePrefix: string = `with open('${bootFileName}', 'w') as f:\n    f.write('''\n`;
 const bootSaveSuffix: string = "\n''')\n";
 
