@@ -8,17 +8,7 @@ export class DeviceService {
   private deviceType: string = '';
   private decoder: TextDecoder = new TextDecoder();
 
-  constructor() {
-    // Contiuously check the port status every 2 seconds to update the connection status/card
-    setInterval(() => {
-      console.log('[DeviceService]: Checking port status...');
-      if (this.port && !this.port.readable && !this.port.writable) {
-        console.log('[DeviceService]: Port is not readable or writable, disconnecting...');
-        this.disconnect();
-      }
-    }, 2000);
-
-  }
+  constructor() {}
 
   // Check if port is available (return true if available)
   // Don't run if we are already connected from within this tab
@@ -107,6 +97,15 @@ export class DeviceService {
         detail: { msg: "Connected" }
     });
     document.dispatchEvent(event)
+
+    // Contiuously check the port status every 2 seconds to update the connection status/card
+    setInterval(() => {
+      console.log('[DeviceService]: Checking port status...');
+      if (this.port && !this.port.readable && !this.port.writable) {
+        console.log('[DeviceService]: Port is not readable or writable, disconnecting...');
+        this.disconnect();
+      }
+    }, 2000);
   }
 
   async disconnect(): Promise<void> {
