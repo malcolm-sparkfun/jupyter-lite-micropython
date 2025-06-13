@@ -11,6 +11,7 @@ export class DeviceService {
   constructor() {
     // Contiuously check the port status every 2 seconds to update the connection status/card
     setInterval(() => {
+      console.log('[DeviceService]: Checking port status...');
       if (this.port && !this.port.readable && !this.port.writable) {
         console.log('[DeviceService]: Port is not readable or writable, disconnecting...');
         this.disconnect();
