@@ -71,6 +71,7 @@ export class DeviceService {
 
     if (!this.portChecked) {
       logCallback('Port cannot be opened.\nDid you select the correct port?\nIs the port already open in another application or tab?');
+      alert('Port cannot be opened.\nDid you select the correct port?\nIs the port already open in another application or tab?');
       return;
     }
 
