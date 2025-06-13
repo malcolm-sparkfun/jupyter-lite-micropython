@@ -40,6 +40,7 @@ export class EmbeddedKernel extends BaseKernel {
   }
 
   async interrupt(): Promise<void> {
+    console.log("Kernel Interrupt Requested!")
     await this.serviceContainer.deviceService.sendInterrupt();
   }
 

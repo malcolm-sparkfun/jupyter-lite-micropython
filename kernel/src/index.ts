@@ -39,7 +39,8 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         },
       },
       create: async (options: IKernel.IOptions): Promise<IKernel> => {
-
+        
+        console.log("CREATED NEW EMBEDDED KERNEL...")
         const serviceContainer = new ServiceContainer()
         await serviceContainer.init();
 
