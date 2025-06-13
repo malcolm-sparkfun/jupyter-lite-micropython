@@ -10,8 +10,9 @@ export class ServiceContainer {
   private _firmwareService: FirmwareService;
   private _flashService: FlashService;
 
-  constructor() {
-    this._deviceService = new DeviceService();
+  constructor(devService?: DeviceService | null) {
+    // If a DeviceService instance is passed (and is not null), use it; otherwise, create a new one.
+    this._deviceService = devService || new DeviceService();
     this._consoleService = new ConsoleService(this._deviceService);
     this._firmwareService = new FirmwareService(this._deviceService);
     

@@ -4,6 +4,10 @@ import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
 import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
 import { ServiceContainer } from './services/ServiceContainer';
+import { DeviceService } from './services/DeviceService';
+
+// Variable for saving the DeviceService instance so we can restore it if kernel is restarted 
+var devService: DeviceService | null = null;
 
 // Kernel plugin for the embedded kernel
 const kernelPlugin: JupyterLiteServerPlugin<void> = {
@@ -39,10 +43,13 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         },
       },
       create: async (options: IKernel.IOptions): Promise<IKernel> => {
-        
+
         console.log("CREATED NEW EMBEDDED KERNEL...")
-        const serviceContainer = new ServiceContainer()
+        const serviceContainer = new ServiceContainer(devService);
         await serviceContainer.init();
+
+        // Save the DeviceService instance so we can restore it if kernel is restarted
+        devService = serviceContainer.deviceService;
 
         const welcomePanel = new WelcomePanel(serviceContainer);
         document.body.appendChild(welcomePanel.getElement());
