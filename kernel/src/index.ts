@@ -57,6 +57,11 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
 
         // welcomePanel.show();
         welcomePanel.initialShow();
+
+        // If the deivce is already connected, update the welcome panel
+        if (serviceContainer.deviceService.isConnected()) { 
+          welcomePanel.updateOnConnection("Device already connected");
+        }
         
         await kernel.ready;
 

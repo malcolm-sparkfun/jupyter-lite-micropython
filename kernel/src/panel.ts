@@ -110,21 +110,6 @@ export default class WelcomePanel {
     ].join('\n');
     document.head.appendChild(styleElement);
 
-    // TODO: 
-    // 1) We no longer want the dialog to be shown on startup and we also don't want it 
-    // to be shown when the user clicks on the minimized button.
-    // 2) We want to act as if the connect card was clicked when the user clicks on the minimized button.
-    // 3) We want there to be a new popup if connecting to the device fails that contains suggestions for why
-    
-    // currently objects are like this:
-
-    // WelcomePanel -> MinimizedPanel -> MinimizedButton -> DeviceService    <-|
-    // WelcomePanel -> DialogPanel -> Dialog -> ConnectCard -> DeviceService <-|
-    // We want to change this to be like this:
-    // WelcomePanel -> MinimizedPanel -> MinimizedButton -> DeviceService
-
-    // need a good way to add the same connection behavior but up a level
-
     const minimizedButton = new MinimizedButton(() => this.show());
     this.minimizedPanel = new MinimizedPanel(minimizedButton);
 
