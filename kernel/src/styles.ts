@@ -425,6 +425,10 @@ export const minimizedStyles = `
     background-color: #2ecc71;
   }
 
+  .status-indicator.connected {
+    background-color: #e74c3c;
+  }
+
   .device-label {
     font-size: 11px;
     color: #555;

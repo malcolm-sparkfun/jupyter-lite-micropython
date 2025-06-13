@@ -52,11 +52,13 @@ export class MinimizedButton {
 
   updateOnConnection(msg: string){
     this.statusIndicator.classList.add('connected');
+    this.statusIndicator.classList.remove('disconnected');
     this.deviceLabel.textContent = msg;
     this.element.title = `Open RedBoard Device Manager (${msg})`;
   }
   updateOnDisconnection(msg: string){
     this.statusIndicator.classList.add('disconnected');
+    this.statusIndicator.classList.add('connected');
     this.deviceLabel.textContent = msg;
     this.element.title = `Open RedBoard Device Manager (${msg})`;
   }
