@@ -27,10 +27,14 @@ export class ConnectCard extends Card {
     document.addEventListener('deviceConnected', (event: Event) => {
       this.processCardUI(props);
     });
+
+    document.addEventListener('deviceDisconnected', (event: Event) => {
+      this.processCardUI(props);
+    });
   }
 
   processCardUI(props: any): void {
-    if (this.deviceService === undefined) {
+    if ((this.deviceService === undefined) || (this.deviceService.isConnected() === false) ) {
       this.element.innerHTML = `
         <div class="card-content">
           <span class="welcome-icon">${props.icon || '🔌'}</span>
