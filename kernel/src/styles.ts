@@ -425,7 +425,7 @@ export const minimizedStyles = `
     background-color: #2ecc71;
   }
 
-  .status-indicator.connected {
+  .status-indicator.diconnected {
     background-color: #e74c3c;
   }
 
