@@ -98,14 +98,15 @@ export class DeviceService {
     });
     document.dispatchEvent(event)
 
-    // Contiuously check the port status every 2 seconds to update the connection status/card
-    setInterval(() => {
-      console.log('[DeviceService]: Checking port status...');
-      if (this.port && !this.port.readable && !this.port.writable) {
-        console.log('[DeviceService]: Port is not readable or writable, disconnecting...');
-        this.disconnect();
-      }
-    }, 2000);
+    // Listen for physical disconnect event
+    this.port.addEventListener('disconnect', () => {
+      console.log('[DeviceService]: Serial port physically disconnected.');
+      this.isDeviceConnected = false;
+      const event = new CustomEvent("deviceDisconnected", {
+        detail: { msg: "Not connected" }
+      });
+      document.dispatchEvent(event);
+    });
   }
 
   async disconnect(): Promise<void> {
