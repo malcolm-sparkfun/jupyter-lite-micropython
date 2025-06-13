@@ -92,7 +92,6 @@ export default class WelcomePanel {
   private dialogPanel: DialogPanel;
 
   constructor(private serviceContainer: ServiceContainer) {
-  // constructor() {
 
     this.element = document.createElement('div');
     this.element.id = 'jp-kernel-welcome-panel';
@@ -153,7 +152,7 @@ export default class WelcomePanel {
     this.minimizedPanel.updateOnConnection(connection_msg)
   }
   updateOnDisconnection(connection_msg: string): void{
-    this.minimizedPanel.updateOnConnection(connection_msg)
+    this.minimizedPanel.updateOnDisconnection(connection_msg)
   }
 
   show(): void {
