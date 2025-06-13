@@ -8,7 +8,16 @@ export class DeviceService {
   private deviceType: string = '';
   private decoder: TextDecoder = new TextDecoder();
 
-  constructor() {}
+  constructor() {
+    // Contiuously check the port status every 2 seconds to update the connection status/card
+    setInterval(() => {
+      if (this.port && !this.port.readable && !this.port.writable) {
+        console.log('[DeviceService]: Port is not readable or writable, disconnecting...');
+        this.disconnect();
+      }
+    }, 2000);
+
+  }
 
   // Check if port is available (return true if available)
   // Don't run if we are already connected from within this tab
