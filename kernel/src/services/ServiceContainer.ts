@@ -2,6 +2,7 @@ import { DeviceService } from './DeviceService';
 import { ConsoleService } from './ConsoleService';
 import { FirmwareService } from './FirmwareService';
 import { FlashService } from './FlashService';
+import { StreamCallback } from './ConsoleService';
 
 const bootFileName: string = "main.py";
 const bootSavePrefix: string = `with open('${bootFileName}', 'w') as f:\n    f.write('''\n`;
@@ -51,7 +52,7 @@ export class ServiceContainer {
   
   public async saveCodeToDevice(
     codeToSave: string,
-    stream: (content: string) => void
+    stream: ((content: string) => void) | StreamCallback
   ): Promise<{ status: string; execution_count: number; ename?: string; evalue?: string; traceback?: string[] }> {
     if (!codeToSave) {
       return {
@@ -93,8 +94,7 @@ export class ServiceContainer {
     console.log(`[ServiceContainer] saveCodeToDevice - Code saved successfully`);
     return {
       status: 'ok',
-      execution_count: 0,
-      user_expressions: {},
+      execution_count: 0
     };
   }
 }
