@@ -48,6 +48,16 @@ export class Dialog {
     // create an arrow function that calls the save method on the serviceContainer but first iterates over all cells and gathers their code content if they are code cells
     async () => {
       // TODO: current widget might not be correct at this level, need to check and possibly change how we're getting this
+      console.log("[Dialog] saveCard: props.app =", JSON.parse(JSON.stringify(props.app, (key, value) => {
+        // Avoid circular references and functions
+        if (typeof value === 'function') return '[Function]';
+        if (typeof value === 'object' && value !== null) {
+          if (value instanceof HTMLElement) return '[HTMLElement]';
+          if (value instanceof Map) return '[Map]';
+          if (value instanceof Set) return '[Set]';
+        }
+        return value;
+      })));
       const notebook = (props.app.shell as any).currentWidget as NotebookPanel | null;
       var allCellContent : string = '';
 
