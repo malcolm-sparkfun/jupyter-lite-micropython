@@ -94,7 +94,7 @@ export default class WelcomePanel {
 
   constructor(
     private serviceContainer: ServiceContainer,
-    private app?: JupyterLiteServer
+    private app: JupyterLiteServer
   ) {
 
     this.element = document.createElement('div');

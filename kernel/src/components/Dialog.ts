@@ -57,10 +57,12 @@ export class Dialog {
         console.log("[Dialog] saveCard: Found notebook:", notebook.title.label);
         notebook.revealed.then(() => {
           
-          for (const cell of notebook.content.model.cells) {
-            const shared_cell_mapping = cell.sharedModel;
-            if (shared_cell_mapping.cell_type === 'code') {
-              allCellContent += shared_cell_mapping.getSource() + '\n\n';
+          if (notebook.content.model) {
+            for (const cell of notebook.content.model.cells) {
+              const shared_cell_mapping = cell.sharedModel;
+              if (shared_cell_mapping.cell_type === 'code') {
+                allCellContent += shared_cell_mapping.getSource() + '\n\n';
+              }
             }
           }
 
