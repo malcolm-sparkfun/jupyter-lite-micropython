@@ -2,6 +2,7 @@ import { globalStyles, animations, overlayStyles, dialogStyles, minimizedStyles,
 import { MinimizedButton } from './components/MinimizedButton';
 import { Dialog } from './components/Dialog';
 import { ServiceContainer } from './services/ServiceContainer';
+import type { JupyterLiteServer } from '@jupyterlite/server';
 
 class DialogPanel {
   private element: HTMLDivElement;
@@ -91,7 +92,10 @@ export default class WelcomePanel {
   private minimizedPanel: MinimizedPanel;
   private dialogPanel: DialogPanel;
 
-  constructor(private serviceContainer: ServiceContainer) {
+  constructor(
+    private serviceContainer: ServiceContainer,
+    private app?: JupyterLiteServer
+  ) {
 
     this.element = document.createElement('div');
     this.element.id = 'jp-kernel-welcome-panel';
@@ -115,6 +119,7 @@ export default class WelcomePanel {
     const dialog = new Dialog({
       closeDialog: () => this.hide(),
       serviceContainer: this.serviceContainer,
+      app: this.app,
     });
     this.dialogPanel = new DialogPanel(dialog);
 

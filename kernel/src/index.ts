@@ -1,6 +1,7 @@
 // Removed Widget import as we're no longer using @lumino/widgets
 import { JupyterLiteServer, JupyterLiteServerPlugin } from '@jupyterlite/server';
 import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
+// import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
 import { ServiceContainer } from './services/ServiceContainer';
@@ -51,7 +52,10 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         // Save the DeviceService instance so we can restore it if kernel is restarted
         devService = serviceContainer.deviceService;
 
-        const welcomePanel = new WelcomePanel(serviceContainer);
+        const welcomePanel = new WelcomePanel(
+          serviceContainer,
+          app
+        );
         document.body.appendChild(welcomePanel.getElement());
         const kernel = new EmbeddedKernel(options, serviceContainer);
 
@@ -69,6 +73,18 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         return kernel;
       }
     });
+
+    // notebookTracker.currentChanged.connect((tracker, panel: NotebookPanel | null) => {
+    //   if (panel) {
+    //     console.log("Notebook changed to: ", panel.context.path);
+    //     const currentNotebookPanel = notebookTracker.currentWidget;
+        
+
+    //   }
+    //   else{
+    //     console.log("No notebook currently active on currentChanged event.")
+    //   }
+    // });
   }
 };
 
