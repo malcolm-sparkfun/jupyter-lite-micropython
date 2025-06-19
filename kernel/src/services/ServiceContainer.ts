@@ -52,7 +52,7 @@ export class ServiceContainer {
   
   public async saveCodeToDevice(
     codeToSave: string,
-    stream: ((content: string) => void) | StreamCallback
+    stream: StreamCallback | null = null
   ): Promise<{ status: string; execution_count: number; ename?: string; evalue?: string; traceback?: string[] }> {
     if (!codeToSave) {
       return {
@@ -78,7 +78,10 @@ export class ServiceContainer {
       };
     }
 
-    const result = await this._consoleService.executeCommand(bootCodeWithSave, stream);
+    const result = await this._consoleService.executeCommand(
+      bootCodeWithSave,
+      stream ?? (() => {})
+    );
     
     if (!result.success) {
       console.log("[ServiceContainer] saveCodeToDevice - Command execution failed:", result.error);

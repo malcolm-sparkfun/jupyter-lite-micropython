@@ -70,9 +70,7 @@ export class Dialog {
         });  
       }
 
-      return props.serviceContainer.saveCodeToDevice(allCellContent, (content) => {
-        console.log("[Dialog] saveCard: Streaming output:", content);
-      });
+      return props.serviceContainer.saveCodeToDevice(allCellContent);
     });
 
     optionsContainer.appendChild(this.connectCard.getElement());
