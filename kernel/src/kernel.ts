@@ -83,7 +83,7 @@ export class EmbeddedKernel extends BaseKernel {
       this.outputResponse(`Save command detected, saving code...`);
       const codeToSave = code.split(saveString)[1].trim();
       // pass the "stream" to the saveCodeToDevice method
-      const result = await this.serviceContainer.saveCodeToDevice(codeToSave, this.outputResponse.bind(this));
+      const result = await this.serviceContainer.saveCodeToDevice(codeToSave, this.stream.bind(this));
       if (result && result.status === 'ok') {
         return {
           status: 'ok',
