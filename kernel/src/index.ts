@@ -1,7 +1,7 @@
 // Removed Widget import as we're no longer using @lumino/widgets
 import { JupyterLiteServer, JupyterLiteServerPlugin } from '@jupyterlite/server';
 import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
-// import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
+import { INotebookTracker} from '@jupyterlab/notebook';
 import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
 import { ServiceContainer } from './services/ServiceContainer';
@@ -14,8 +14,8 @@ var devService: DeviceService | null = null;
 const kernelPlugin: JupyterLiteServerPlugin<void> = {
   id: 'jupyterlite-embedded-kernel:kernel',
   autoStart: true,
-  requires: [IKernelSpecs],
-  activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs) => {
+  requires: [IKernelSpecs, INotebookTracker],
+  activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs, notebookTracker: INotebookTracker) => {
     const activeKernels = new Map<string, EmbeddedKernel>();
 
     app.router.post('/api/kernels/(.*)/interrupt', async (req, kernelId: string) => {
@@ -54,7 +54,7 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
 
         const welcomePanel = new WelcomePanel(
           serviceContainer,
-          app
+          notebookTracker
         );
         document.body.appendChild(welcomePanel.getElement());
         const kernel = new EmbeddedKernel(options, serviceContainer);
@@ -73,18 +73,6 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         return kernel;
       }
     });
-
-    // notebookTracker.currentChanged.connect((tracker, panel: NotebookPanel | null) => {
-    //   if (panel) {
-    //     console.log("Notebook changed to: ", panel.context.path);
-    //     const currentNotebookPanel = notebookTracker.currentWidget;
-        
-
-    //   }
-    //   else{
-    //     console.log("No notebook currently active on currentChanged event.")
-    //   }
-    // });
   }
 };
 

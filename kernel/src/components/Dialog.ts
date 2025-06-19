@@ -2,12 +2,12 @@ import { ConnectCard } from './ConnectCard';
 import { ServiceContainer } from '../services/ServiceContainer';
 import { Card } from './Card';
 import { NotebookPanel } from '@jupyterlab/notebook';
-import type { JupyterLiteServer } from '@jupyterlite/server';
+import { INotebookTracker} from '@jupyterlab/notebook';
 
 export interface DialogProps {
   closeDialog: () => void;
   serviceContainer: ServiceContainer;
-  app: JupyterLiteServer;
+  nTracker: INotebookTracker;
 }
 
 export class Dialog {
@@ -48,8 +48,10 @@ export class Dialog {
     // create an arrow function that calls the save method on the serviceContainer but first iterates over all cells and gathers their code content if they are code cells
     async () => {
       // TODO: current widget might not be correct at this level, need to check and possibly change how we're getting this
-      console.log("[Dialog] saveCard: props.app =", props.app);
-      const notebook = (props.app.shell as any).currentWidget as NotebookPanel | null;
+      // console.log("[Dialog] saveCard: props.app =", props.app);
+      // const notebook = (props.app.shell as any).currentWidget as NotebookPanel | null;
+      // console.log("[Dialog] saveCard: notebook =", notebook);
+      const notebook = props.nTracker.currentWidget as NotebookPanel | null;
       var allCellContent : string = '';
 
       console.log("[Dialog] saveCard: Saving notebook content...");
