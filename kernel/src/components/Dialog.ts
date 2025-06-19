@@ -48,7 +48,7 @@ export class Dialog {
     // create an arrow function that calls the save method on the serviceContainer but first iterates over all cells and gathers their code content if they are code cells
     async () => {
       // TODO: current widget might not be correct at this level, need to check and possibly change how we're getting this
-      const notebook = props.app?.shell.currentWidget as NotebookPanel | null;
+      const notebook = (props.app?.shell as { currentWidget?: unknown })?.currentWidget as NotebookPanel | null;
       var allCellContent : string = '';
 
       console.log("[Dialog] saveCard: Saving notebook content...");
@@ -57,12 +57,10 @@ export class Dialog {
         console.log("[Dialog] saveCard: Found notebook:", notebook.title.label);
         notebook.revealed.then(() => {
           
-          
           for (const cell of notebook.content.model.cells) {
-            // TODO: nbformat has this property as 'cell_type' not 'type'
-            // but it seems from the JupyterLab direct docs that it should be 'type'
-            if (cell.type === 'code') {
-              allCellContent += cell.source + '\n\n';
+            const shared_cell_mapping = cell.sharedModel;
+            if (shared_cell_mapping.cell_type === 'code') {
+              allCellContent += shared_cell_mapping.getSource() + '\n\n';
             }
           }
 
