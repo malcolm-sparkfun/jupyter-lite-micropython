@@ -48,7 +48,7 @@ export class Dialog {
     // create an arrow function that calls the save method on the serviceContainer but first iterates over all cells and gathers their code content if they are code cells
     async () => {
       // TODO: current widget might not be correct at this level, need to check and possibly change how we're getting this
-      const notebook = props.app.shell.currentWidget as NotebookPanel | null;
+      const notebook = (props.app.shell as any).currentWidget as NotebookPanel | null;
       var allCellContent : string = '';
 
       console.log("[Dialog] saveCard: Saving notebook content...");
