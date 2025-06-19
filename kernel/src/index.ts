@@ -11,7 +11,7 @@ import { DeviceService } from './services/DeviceService';
 var devService: DeviceService | null = null;
 
 // Kernel plugin for the embedded kernel
-const kernelPlugin: JupyterLiteServerPlugin<void> = {
+const kernelPlugin: JupyterLiteServerPlugin<[IKernelSpecs, INotebookTracker]> = {
   id: 'jupyterlite-embedded-kernel:kernel',
   autoStart: true,
   requires: [IKernelSpecs, INotebookTracker],
