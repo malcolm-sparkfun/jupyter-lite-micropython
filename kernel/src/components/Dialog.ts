@@ -1,7 +1,6 @@
 import { ConnectCard } from './ConnectCard';
 import { ServiceContainer } from '../services/ServiceContainer';
 import { Card } from './Card';
-import { LabShell } from '@jupyterlab/application';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import type { JupyterLiteServer } from '@jupyterlite/server';
 
