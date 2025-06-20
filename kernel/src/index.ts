@@ -14,7 +14,7 @@ var devService: DeviceService | null = null;
 let notebookTracker: INotebookTracker | null = null;
 
 // Frontend plugin to capture the notebook tracker
-const frontendPlugin: JupyterFrontEndPlugin<void> = {
+const frontendPlugin: JupyterFrontEndPlugin<void, INotebookTracker> = {
   id: 'jupyterlite-embedded-kernel:frontend',
   autoStart: true,
   requires: [INotebookTracker],
