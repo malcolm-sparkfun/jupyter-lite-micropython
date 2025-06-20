@@ -1,6 +1,5 @@
 // Removed Widget import as we're no longer using @lumino/widgets
-// import { JupyterLiteServer, JupyterLiteServerPlugin } from '@jupyterlite/server';
-import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application';
+import { JupyterLiteServer, JupyterLiteServerPlugin } from '@jupyterlite/server';
 import { IKernel, IKernelSpecs } from '@jupyterlite/kernel';
 import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
@@ -11,11 +10,11 @@ import { DeviceService } from './services/DeviceService';
 var devService: DeviceService | null = null;
 
 // Kernel plugin for the embedded kernel
-const kernelPlugin: JupyterFrontEndPlugin<void> = { 
+const kernelPlugin: JupyterLiteServerPlugin<void> = {
   id: 'jupyterlite-embedded-kernel:kernel',
   autoStart: true,
   requires: [IKernelSpecs],
-  activate: (app: JupyterFrontEnd, kernelspecs: IKernelSpecs) => {
+  activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs) => {
     const activeKernels = new Map<string, EmbeddedKernel>();
 
     // print the app to console
