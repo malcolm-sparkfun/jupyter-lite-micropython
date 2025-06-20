@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/save_button
   pull_request:
     branches:
       - '*'
