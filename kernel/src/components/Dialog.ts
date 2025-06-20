@@ -1,13 +1,12 @@
 import { ConnectCard } from './ConnectCard';
 import { ServiceContainer } from '../services/ServiceContainer';
 import { Card } from './Card';
-import { NotebookPanel } from '@jupyterlab/notebook';
-import { INotebookTracker} from '@jupyterlab/notebook';
+// import { NotebookPanel } from '@jupyterlab/notebook';
+// import { INotebookTracker} from '@jupyterlab/notebook';
 
 export interface DialogProps {
   closeDialog: () => void;
   serviceContainer: ServiceContainer;
-  nTracker: INotebookTracker;
 }
 
 export class Dialog {
@@ -51,29 +50,29 @@ export class Dialog {
       // console.log("[Dialog] saveCard: props.app =", props.app);
       // const notebook = (props.app.shell as any).currentWidget as NotebookPanel | null;
       // console.log("[Dialog] saveCard: notebook =", notebook);
-      const notebook = props.nTracker.currentWidget as NotebookPanel | null;
-      var allCellContent : string = '';
+      // const notebook = props.nTracker.currentWidget as NotebookPanel | null;
+      // var allCellContent : string = '';
 
       console.log("[Dialog] saveCard: Saving notebook content...");
 
-      if (notebook) {
-        console.log("[Dialog] saveCard: Found notebook:", notebook.title.label);
-        notebook.revealed.then(() => {
+      // if (notebook) {
+      //   console.log("[Dialog] saveCard: Found notebook:", notebook.title.label);
+      //   notebook.revealed.then(() => {
           
-          if (notebook.content.model) {
-            for (const cell of notebook.content.model.cells) {
-              const shared_cell_mapping = cell.sharedModel;
-              if (shared_cell_mapping.cell_type === 'code') {
-                allCellContent += shared_cell_mapping.getSource() + '\n\n';
-              }
-            }
-          }
+      //     if (notebook.content.model) {
+      //       for (const cell of notebook.content.model.cells) {
+      //         const shared_cell_mapping = cell.sharedModel;
+      //         if (shared_cell_mapping.cell_type === 'code') {
+      //           allCellContent += shared_cell_mapping.getSource() + '\n\n';
+      //         }
+      //       }
+      //     }
 
-          console.log("[Dialog] saveCard: Cells to save:", allCellContent);
-        });  
-      }
+      //     console.log("[Dialog] saveCard: Cells to save:", allCellContent);
+      //   });  
+      // }
 
-      return props.serviceContainer.saveCodeToDevice(allCellContent);
+      // return props.serviceContainer.saveCodeToDevice(allCellContent);
     });
 
     optionsContainer.appendChild(this.connectCard.getElement());

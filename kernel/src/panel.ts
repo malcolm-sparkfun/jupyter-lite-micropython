@@ -2,7 +2,7 @@ import { globalStyles, animations, overlayStyles, dialogStyles, minimizedStyles,
 import { MinimizedButton } from './components/MinimizedButton';
 import { Dialog } from './components/Dialog';
 import { ServiceContainer } from './services/ServiceContainer';
-import { INotebookTracker} from '@jupyterlab/notebook';
+// import { INotebookTracker} from '@jupyterlab/notebook';
 
 class DialogPanel {
   private element: HTMLDivElement;
@@ -94,7 +94,6 @@ export default class WelcomePanel {
 
   constructor(
     private serviceContainer: ServiceContainer,
-    private nTracker: INotebookTracker
   ) {
 
     this.element = document.createElement('div');
@@ -119,7 +118,6 @@ export default class WelcomePanel {
     const dialog = new Dialog({
       closeDialog: () => this.hide(),
       serviceContainer: this.serviceContainer,
-      nTracker: this.nTracker,
     });
     this.dialogPanel = new DialogPanel(dialog);
 
