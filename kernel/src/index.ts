@@ -5,9 +5,26 @@ import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
 import { ServiceContainer } from './services/ServiceContainer';
 import { DeviceService } from './services/DeviceService';
+import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlite/application';
+import { INotebookTracker } from '@jupyterlite/notebook';
 
 // Variable for saving the DeviceService instance so we can restore it if kernel is restarted 
 var devService: DeviceService | null = null;
+
+let notebookTracker: INotebookTracker | null = null;
+
+// Frontend plugin to capture the notebook tracker
+const frontendPlugin: JupyterFrontEndPlugin<void> = {
+  id: 'jupyterlite-embedded-kernel:frontend',
+  autoStart: true,
+  requires: [INotebookTracker],
+  activate: (app: JupyterFrontEnd, tracker: INotebookTracker) => {
+    notebookTracker = tracker;
+    console.log('Embedded Kernel Frontend Plugin Activated');
+
+    console.log('Notebook Tracker:', notebookTracker);
+  }
+};
 
 // Kernel plugin for the embedded kernel
 const kernelPlugin: JupyterLiteServerPlugin<void> = {
@@ -77,3 +94,4 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
 };
 
 export default [kernelPlugin];
+export {frontendPlugin, notebookTracker};
