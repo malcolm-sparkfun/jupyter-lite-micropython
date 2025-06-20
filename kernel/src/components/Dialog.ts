@@ -51,9 +51,9 @@ export class Dialog {
       // TODO: current widget might not be correct at this level, need to check and possibly change how we're getting this
       console.log("[Dialog] saveCard: props.app =", props.app);
 
-      // Wait for the app to not be null
-      if (!props.app) {
-        console.error("[Dialog] saveCard: props.app is null, cannot save notebook.");
+      // Wait for the app shell to not be null or undefined
+      if (!props.app.shell) {
+        console.error("[Dialog] saveCard: App shell is not available.");
         return;
       }
 
