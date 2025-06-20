@@ -5,8 +5,8 @@ import { EmbeddedKernel } from './kernel';
 import WelcomePanel from './panel';
 import { ServiceContainer } from './services/ServiceContainer';
 import { DeviceService } from './services/DeviceService';
-import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlite/application';
-import { INotebookTracker } from '@jupyterlite/notebook';
+import { JupyterFrontEnd, JupyterFrontEndPlugin } from '@jupyterlab/application';
+import { INotebookTracker } from '@jupyterlab/notebook';
 
 // Variable for saving the DeviceService instance so we can restore it if kernel is restarted 
 var devService: DeviceService | null = null;
