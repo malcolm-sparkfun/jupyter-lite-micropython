@@ -14,11 +14,11 @@ var devService: DeviceService | null = null;
 let notebookTracker: INotebookTracker | null = null;
 
 // Frontend plugin to capture the notebook tracker
-const frontendPlugin: JupyterFrontEndPlugin<void, INotebookTracker> = {
+const frontendPlugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlite-embedded-kernel:frontend',
   autoStart: true,
-  requires: [INotebookTracker],
-  activate: (app: JupyterFrontEnd, tracker: INotebookTracker) => {
+  requires: [INotebookTracker as any],
+  activate: (_app: JupyterFrontEnd, tracker: INotebookTracker) => {
     notebookTracker = tracker;
     console.log('Embedded Kernel Frontend Plugin Activated');
 
