@@ -17,13 +17,6 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
   activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs) => {
     const activeKernels = new Map<string, EmbeddedKernel>();
 
-    // print the app to console
-    console.log("JupyterLite Embedded Kernel Plugin Activated. App:", app);
-    // Get the current NotebookPanel instance if available
-    // @ts-ignore: JupyterLite may expose notebook panel via global or app context
-    const notebookPanel = (window as any).notebookPanel || app.notebookPanel || null;
-    console.log("Notebook Panel:", notebookPanel);
-
     app.router.post('/api/kernels/(.*)/interrupt', async (req, kernelId: string) => {
       const kernel = activeKernels.get(kernelId);
       if (kernel) {
@@ -59,7 +52,8 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         devService = serviceContainer.deviceService;
 
         const welcomePanel = new WelcomePanel(
-          serviceContainer
+          serviceContainer,
+          app
         );
         document.body.appendChild(welcomePanel.getElement());
         const kernel = new EmbeddedKernel(options, serviceContainer);
@@ -75,14 +69,6 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         await kernel.ready;
 
         activeKernels.set(kernel.id, kernel);
-
-        // print the app to console
-        console.log("JupyterLite Embedded Kernel Plugin Later app show:", app);
-
-        // Get the current NotebookPanel instance if available
-        // @ts-ignore: JupyterLite may expose notebook panel via global or app context
-        const notebookPanel = (window as any).notebookPanel || app.notebookPanel || null;
-        console.log("Notebook Panel Later:", notebookPanel);
 
         return kernel;
       }

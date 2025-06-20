@@ -3,6 +3,7 @@ import { MinimizedButton } from './components/MinimizedButton';
 import { Dialog } from './components/Dialog';
 import { ServiceContainer } from './services/ServiceContainer';
 // import { INotebookTracker} from '@jupyterlab/notebook';
+import { JupyterLiteServer } from '@jupyterlite/server';
 
 class DialogPanel {
   private element: HTMLDivElement;
@@ -94,6 +95,7 @@ export default class WelcomePanel {
 
   constructor(
     private serviceContainer: ServiceContainer,
+    private app: JupyterLiteServer
   ) {
 
     this.element = document.createElement('div');
@@ -118,6 +120,7 @@ export default class WelcomePanel {
     const dialog = new Dialog({
       closeDialog: () => this.hide(),
       serviceContainer: this.serviceContainer,
+      app: this.app
     });
     this.dialogPanel = new DialogPanel(dialog);
 
