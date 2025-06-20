@@ -11,11 +11,11 @@ import { DeviceService } from './services/DeviceService';
 var devService: DeviceService | null = null;
 
 // Kernel plugin for the embedded kernel
-const kernelPlugin: JupyterLiteServerPlugin<[IKernelSpecs, INotebookTracker]> = {
+const kernelPlugin: JupyterLiteServerPlugin<void> = {
   id: 'jupyterlite-embedded-kernel:kernel',
   autoStart: true,
-  requires: [IKernelSpecs, INotebookTracker],
-  activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs, notebookTracker: INotebookTracker) => {
+  requires: [IKernelSpecs],
+  activate: (app: JupyterLiteServer, kernelspecs: IKernelSpecs) => {
     const activeKernels = new Map<string, EmbeddedKernel>();
 
     app.router.post('/api/kernels/(.*)/interrupt', async (req, kernelId: string) => {
