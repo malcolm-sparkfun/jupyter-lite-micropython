@@ -71,6 +71,10 @@ const kernelPlugin: JupyterLiteServerPlugin<void> = {
         await kernel.ready;
 
         activeKernels.set(kernel.id, kernel);
+
+        // print the app to console
+      console.log("JupyterLite Embedded Kernel Plugin Later app show:", app);
+
         return kernel;
       }
     });
